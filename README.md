@@ -7,6 +7,18 @@
 Чат-бот с возможностью загрузки моделей в формате GGUF, работающий на `llama-cpp-python` с веб-интерфейсом на `Gradio`  
 После запуска происходит загрузка модели по умолчаню (`gemma-2-2b-it-Q8_0.gguf`, размер 2.7GB) в папку `./models`, есть возможность загрузки других моделей в формате GGUF в окне приложения
 
+
+---
+### Ссылки
+[![Open in Colab](https://img.shields.io/static/v1?message=Open%20in%20Colab&logo=googlecolab&labelColor=5c5c5c&color=0f80c1&label=%20)](https://colab.research.google.com/github/sergey21000/gradio-llamacpp-chatbot/blob/main/Chat_bot_Llama_cpp_gradio_deploy.ipynb)
+[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/sergey21000/gradio-llamacpp-chatbot)
+[![Docker Hub](https://img.shields.io/badge/Docker-Hub-blue?logo=docker)](https://hub.docker.com/r/sergey21000/gradio-llamacpp-chatbot)
+
+В Google Colab ноутбуке находится код приложения с комментариями, демонстрация пошагового инференса модели `llama-cpp-python`, а так же пример деплоя веб-приложения на фреймворке Gradio на облачный сервер + подключение и настройка сервера NGINX + регистрация домена для своего сайта + установка SSL сертификатов для работы приложения по протоколу HTTPS
+
+
+### Скриншоты интерфейса приложения
+
 Главная страница приложения
 <div align="center">
 
@@ -18,15 +30,6 @@
 
 ![App interface](./screenshots/load_models_page.png)
 </div>
-
-
----
-### Ссылки
-[![Open in Colab](https://img.shields.io/static/v1?message=Open%20in%20Colab&logo=googlecolab&labelColor=5c5c5c&color=0f80c1&label=%20)](https://colab.research.google.com/github/sergey21000/gradio-llamacpp-chatbot/blob/main/Chat_bot_Llama_cpp_gradio_deploy.ipynb)
-[![Hugging Face Spaces](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow)](https://huggingface.co/spaces/sergey21000/gradio-llamacpp-chatbot)
-[![Docker Hub](https://img.shields.io/badge/Docker-Hub-blue?logo=docker)](https://hub.docker.com/r/sergey21000/gradio-llamacpp-chatbot)
-
-В Google Colab ноутбуке находится код приложения с комментариями, демонстрация пошагового инференса модели `llama-cpp-python`, а так же пример деплоя веб-приложения на фреймворке Gradio на облачный сервер + подключение и настройка сервера NGINX + регистрация домена для своего сайта + установка SSL сертификатов для работы приложения по протоколу HTTPS
 
 
 ### Возможности
@@ -142,5 +145,5 @@ gradio==4.44.0
 
 ## Лицензия
 
-Этот проект лицензирован на условиях лицензии AGPL-3.0 License. Подробности в файле [LICENSE](./LICENSE).
+Этот проект лицензирован на условиях лицензии Apache-2.0 license. Подробности в файле [LICENSE](./LICENSE).
 
