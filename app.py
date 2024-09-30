@@ -101,7 +101,6 @@ def bot_response_to_chatbot(
 
     if history_len != 0:
         for user_msg, bot_msg in chatbot[:-1][-history_len:]:
-            print(user_msg, bot_msg)
             messages.append({'role': 'user', 'content': user_msg})
             messages.append({'role': 'assistant', 'content': bot_msg})
 
