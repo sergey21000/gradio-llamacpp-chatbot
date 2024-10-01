@@ -16,7 +16,7 @@
 
 В Google Colab ноутбуке находится код приложения с комментариями, демонстрация пошагового инференса модели `llama-cpp-python`, а так же пример деплоя веб-приложения на фреймворке Gradio на облачный сервер + подключение и настройка сервера NGINX + регистрация домена для своего сайта + установка SSL сертификатов для работы приложения по протоколу HTTPS
 
-[Репозиторий](https://huggingface.co/bartowski?search_models=gguf) и [страница поиска](https://huggingface.co/models?library=gguf) моделей в формате GGUF на HuggingFace
+[Репозиторий 1](https://huggingface.co/bartowski?search_models=gguf), [Репозиторий 2](https://huggingface.co/mradermacher) и [страница поиска](https://huggingface.co/models?library=gguf) моделей в формате GGUF на HuggingFace
 
 
 ### Скриншоты интерфейса приложения
