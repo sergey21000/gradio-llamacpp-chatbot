@@ -9,7 +9,9 @@
 
 
 ---
+
 ### Ссылки
+
 <div align="center">
 <a href="https://colab.research.google.com/github/sergey21000/gradio-llamacpp-chatbot/blob/main/Chat_bot_Llama_cpp_gradio_deploy.ipynb"><img src="https://img.shields.io/static/v1?message=Open%20in%20Colab&logo=googlecolab&labelColor=5c5c5c&color=0f80c1&label=%20" alt="Open in Colab"></a>
 <a href="https://huggingface.co/spaces/sergey21000/gradio-llamacpp-chatbot"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow" alt="Hugging Face Spaces"></a>
@@ -37,7 +39,6 @@
 
 
 ### Функционал
-
 - Генерация ответа с использованием моделей в формате GGUF
 - Настройка параметров генерации (`temperature`, `top_k`, `top_p`, `repetition_penalty`)
 - Возможность указать системный промт (если модель его не поддерживает это будет отображено)
@@ -46,8 +47,7 @@
 
 
 ### Стек
-
-- [python](https://www.python.org/) >=3.8
+- [python](https://www.python.org/) >= 3.10
 - [llama-cpp-python](https://github.com/abetlen/llama-cpp-python) для инференса моделей в формате GGUF
 - [gradio](https://github.com/gradio-app/gradio) для написания веб-интерфейса
 - [Модель](https://huggingface.co/bartowski/gemma-2-2b-it-GGUF) `gemma-2-2b` на HuggingFace в формате GGUF  
@@ -67,13 +67,20 @@ cd gradio-llamacpp-chatbot
 
 С поддержкой CPU
 ```
-pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cpu
+pip install -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
 ```
 
 С поддержкой CUDA 12.4
 ```
-pip install -r requirements.txt --extra-index-url https://download.pytorch.org/whl/cu124
+pip install -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124
 ```
+
+Для установки `llama-cpp-python` на Windows с поддержкой CUDA нужно предварительно установить [Visual Studio 2022 Community](https://visualstudio.microsoft.com/ru/downloads/) и [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit-archive), как например указано в этой [инструкции](https://github.com/abetlen/llama-cpp-python/discussions/871#discussion-5812096)  
+Для полной переустановки использовать команду
+```
+pip install --force-reinstall --no-cache-dir -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124
+```
+
 [Страница](https://github.com/abetlen/llama-cpp-python?tab=readme-ov-file#installation-configuration) установки `llama-cpp-python` для других версий и систем
 
 **3) Запуск сервера Gradio**  
@@ -141,13 +148,10 @@ docker run -it --gpus all -p 7860:7860 -v ./models:/app/models gradio-llamacpp-c
 
 ---
 
-Приложение тестировалось на python 3.10 и следующих версиях бибилотек:  
-```
-llama_cpp_python==0.2.88
-gradio==4.44.0
-```
 
-Приложение написано для демонстрационных и образовательных целей, оно не предназначалось и не тестировалось для промышленного использования
+Работоспособность приложения проверялась на Ubuntu 22.04 (python 3.10) и Windows 10 (python 3.12)  
+Приложение создавалось для тестирования моделей с использованием RAG как любительский проект  
+Оно написано для демонстрационных и образовательных целей и не предназначалось / не тестировалось для промышленного использования
 
 ## Лицензия
 
