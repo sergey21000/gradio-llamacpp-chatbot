@@ -63,7 +63,21 @@ git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
 cd gradio-llamacpp-chatbot
 ```
 
-**2) Установка зависимостей**  
+**2) Создание и активация виртуального окружения (опционально)**
+
+Linux
+```
+python3 -m venv env
+source env/bin/activate
+```
+
+Windows
+```
+python -m venv env
+env\Scripts\activate
+```
+
+**3) Установка зависимостей**  
 
 С поддержкой CPU
 ```
@@ -83,7 +97,7 @@ pip install --force-reinstall --no-cache-dir -r requirements.txt --extra-index-u
 
 [Страница](https://github.com/abetlen/llama-cpp-python?tab=readme-ov-file#installation-configuration) установки `llama-cpp-python` для других версий и систем
 
-**3) Запуск сервера Gradio**  
+**4) Запуск сервера Gradio**  
 ```
 python3 app.py
 ```
