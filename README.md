@@ -117,7 +117,7 @@ python3 app.py
 docker run -it -p 7860:7860 -v ./models:/app/models sergey21000/gradio-llamacpp-chatbot:cpu
 ```
 
-*С поддержкой CUDA*
+*С поддержкой CUDA 12.5*
 ```
 docker run -it --gpus all -p 7860:7860 -v ./models:/app/models sergey21000/gradio-llamacpp-chatbot:cuda
 ```
