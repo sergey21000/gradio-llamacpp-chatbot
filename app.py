@@ -255,4 +255,9 @@ with gr.Blocks(theme=theme, css=css) as interface:
             outputs=[system_prompt],
         )
 
+        gr.HTML("""<h3 style='text-align: center'>
+        <a href="https://github.com/sergey21000/gradio-llamacpp-chatbot" target='_blank'>GitHub Repository</a></h3>
+        """)
+
+
 interface.launch(server_name='0.0.0.0', server_port=7860)
