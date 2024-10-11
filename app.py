@@ -86,7 +86,7 @@ def bot_response_to_chatbot(
 
     model = model_dict.get('model')
     if model is None:
-        gt.Info('Model not initialized')
+        gr.Info('Model not initialized')
         yield chatbot
         return
 
