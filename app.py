@@ -10,7 +10,7 @@ from llama_cpp import Llama
 
 # ================== ANNOTATIONS ========================
 
-CHAT_HISTORY = List[Tuple[Optional[str], Optional[str]]]
+CHAT_HISTORY = List[Optional[Dict[str, Optional[str]]]]
 MODEL_DICT = Dict[str, Llama]
 
 
@@ -70,7 +70,7 @@ def download_gguf_and_init_model(gguf_url: str, model_dict: MODEL_DICT) -> Tuple
 
 def user_message_to_chatbot(user_message: str, chatbot: CHAT_HISTORY) -> Tuple[str, CHAT_HISTORY]:
     if user_message:
-        chatbot.append((user_message, None))
+        chatbot.append({'role': 'user', 'metadata': {'title': None}, 'content': user_message})
     return '', chatbot
 
 
@@ -85,37 +85,42 @@ def bot_response_to_chatbot(
         ):
 
     model = model_dict.get('model')
-    user_message = chatbot[-1][0]
+    if model is None:
+        gt.Info('Model not initialized')
+        yield chatbot
+        return
+
+    if len(chatbot) == 0 or chatbot[-1]['role'] == 'assistant':
+        yield chatbot
+        return
+
     messages = []
+    if support_system_role and system_prompt:
+        messages.append({'role': 'system', 'metadata': {'title': None}, 'content': system_prompt})
+
+    if history_len != 0:
+        messages.extend(chatbot[:-1][-(history_len*2):])
+
+    messages.append(chatbot[-1])
 
     gen_kwargs = dict(zip(GENERATE_KWARGS.keys(), generate_args))
     gen_kwargs['top_k'] = int(gen_kwargs['top_k'])
-
     if not do_sample:
         gen_kwargs['top_p'] = 0.0
         gen_kwargs['top_k'] = 1
         gen_kwargs['repeat_penalty'] = 1.0
 
-    if support_system_role and system_prompt:
-        messages.append({'role': 'system', 'content': system_prompt})
-
-    if history_len != 0:
-        for user_msg, bot_msg in chatbot[:-1][-history_len:]:
-            messages.append({'role': 'user', 'content': user_msg})
-            messages.append({'role': 'assistant', 'content': bot_msg})
-
-    messages.append({'role': 'user', 'content': user_message})
     stream_response = model.create_chat_completion(
         messages=messages,
         stream=True,
         **gen_kwargs,
         )
 
-    chatbot[-1][1] = ''
+    chatbot.append({'role': 'assistant', 'metadata': {'title': None}, 'content': ''})
     for chunk in stream_response:
         token = chunk['choices'][0]['delta'].get('content')
         if token is not None:
-            chatbot[-1][1] += token
+            chatbot[-1]['content'] += token
             yield chatbot
 
 
@@ -168,10 +173,15 @@ with gr.Blocks(theme=theme, css=css) as interface:
     support_system_role = gr.State(start_support_system_role)
     
     # ================= CHAT BOT PAGE ======================
-    with gr.Tab('Chat bot'):
+    with gr.Tab('Chatbot'):
         with gr.Row():
             with gr.Column(scale=3):
-                chatbot = gr.Chatbot(show_copy_button=True, bubble_full_width=False, height=480)
+                chatbot = gr.Chatbot(
+                    type='messages',  # new in gradio 5+
+                    show_copy_button=True, 
+                    bubble_full_width=False, 
+                    height=480,
+                    )
                 user_message = gr.Textbox(label='User')
 
                 with gr.Row():
@@ -258,6 +268,5 @@ with gr.Blocks(theme=theme, css=css) as interface:
         gr.HTML("""<h3 style='text-align: center'>
         <a href="https://github.com/sergey21000/gradio-llamacpp-chatbot" target='_blank'>GitHub Repository</a></h3>
         """)
-
-
+    
 interface.launch(server_name='0.0.0.0', server_port=7860)
