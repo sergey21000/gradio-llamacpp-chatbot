@@ -95,7 +95,7 @@ pip install -r requirements.txt --extra-index-url https://abetlen.github.io/llam
 pip install --force-reinstall --no-cache-dir -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124
 ```
 
-[Страница](https://github.com/abetlen/llama-cpp-python?tab=readme-ov-file#installation-configuration) установки `llama-cpp-python` для других версий и систем
+Инструкции по установке [llama-cpp-python](https://github.com/abetlen/llama-cpp-python?tab=readme-ov-file#installation-configuration) для других версий и систем
 
 **4) Запуск сервера Gradio**  
 ```
