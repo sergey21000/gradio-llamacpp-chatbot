@@ -77,7 +77,6 @@
 - [gradio](https://github.com/gradio-app/gradio) для написания веб-интерфейса
 - [Модель gemma-2-2b](https://huggingface.co/bartowski/gemma-2-2b-it-GGUF) в формате GGUF в качестве LLM модели по умолчанию
 
-Работоспособность приложения проверялась на Ubuntu 22.04 (python 3.10) и Windows 10 (python 3.12)  
 Работоспособность приложения проверялась на следующих ОС и версиях Python
 - Ubuntu 22.04, python 3.10.12
 - Windows 10, python 3.12.2
