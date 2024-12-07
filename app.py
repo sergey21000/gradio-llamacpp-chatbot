@@ -162,11 +162,11 @@ theme = gr.themes.Base(primary_hue='green', secondary_hue='yellow', neutral_hue=
     body_text_color_dark='rgb(0, 200, 0)',
     button_secondary_background_fill_dark='green',
 )
-css = '''.gradio-container {width: 60% !important}'''
 
+css = None
+# css = '.gradio-container {width: 60% !important}'
 
 # ================== INTERFACE =============================
-
 with gr.Blocks(theme=theme, css=css) as interface:
     model_dict = gr.State(start_model_dict)
     support_system_role = gr.State(start_support_system_role)
@@ -247,7 +247,7 @@ with gr.Blocks(theme=theme, css=css) as interface:
             label='Link to GGUF',
             placeholder='URL link to the model in GGUF format',
             )
-        load_model_btn = gr.Button('Downloading GGUF and initializing the model')
+        load_model_btn = gr.Button('Downloading GGUF and initializing model')
         load_log = gr.Textbox(
             value=start_load_log,
             label='Model loading status',
@@ -267,5 +267,6 @@ with gr.Blocks(theme=theme, css=css) as interface:
         gr.HTML("""<h3 style='text-align: center'>
         <a href="https://github.com/sergey21000/gradio-llamacpp-chatbot" target='_blank'>GitHub Repository</a></h3>
         """)
-    
-interface.launch(server_name='0.0.0.0', server_port=7860)
+
+if __name__ == '__main__':
+    interface.launch(server_name='0.0.0.0', server_port=7860)
