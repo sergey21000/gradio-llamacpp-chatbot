@@ -80,7 +80,7 @@
 Работоспособность приложения проверялась на следующих ОС и версиях Python
 - Ubuntu 22.04, python 3.10.12
 - Windows 10, python 3.12.2
-- Android 11 (MIUI 12), Termux, python 3.12.7
+- Android 11 (MIUI 12), Ubuntu 22.04, python 3.10.12
 
 
 ---
