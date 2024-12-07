@@ -197,7 +197,7 @@ docker run -it --gpus all -p 7860:7860 -v ./models:/app/models gradio-llamacpp-c
 
 ## 📱 Установка и запуск на Android
 
-[Инструкции](https://github.com/sergey21000/gradio-llamacpp-chatbot/README_Android.md) по запуску бота на Android
+[Инструкции](https://github.com/sergey21000/gradio-llamacpp-chatbot/blob/main/README_Android.md) по запуску бота на Android
 
 
 ## Лицензия
