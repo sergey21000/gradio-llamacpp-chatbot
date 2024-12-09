@@ -202,13 +202,13 @@ ssh-keygen
 
 **3) Вывести содержимое публичного ключа `id_rsa.pub` на ПК**
  - Windows
-```
-cat %USERPROFILE%\.ssh\id_rsa.pub
-```
+  ```
+  cat %USERPROFILE%\.ssh\id_rsa.pub
+  ```
  - Linux
-```
-cat ~/.ssh/id_rsa.pub
-```
+  ```
+  cat ~/.ssh/id_rsa.pub
+  ```
 
 **4) Скопировать содержимое ключа и любым удобным способом перекинуть на телефон (например через Избранное Telegram)**  
 Затем в телефоне скопировать содержимое и вставить его в файл `~/.ssh/authorized_keys` в телефоне  
