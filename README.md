@@ -24,6 +24,7 @@
   - 🏗️ [Сборка своего образа и запуск контейнера](#-Сборка-своего-образа-и-запуск-контейнера)
 - 📱 [Установка и запуск на Android](#-Установка-и-Запуск-на-Android)
 
+
 ---
 ## 📽 Демонстрация
 
@@ -69,6 +70,7 @@
 - [mradermacher](https://huggingface.co/mradermacher?search_models=GGUF) 
 - [Поиск на HuggingFace](https://huggingface.co/models?pipeline_tag=text-generation&library=gguf&sort=trending)
 
+
 ---
 ## 🏗 Стек технологий
 
@@ -95,29 +97,35 @@ cd gradio-llamacpp-chatbot
 
 **2) Создание и активация виртуального окружения (опционально)**
 
-*Linux*
-```
-python3 -m venv env
-source env/bin/activate
-```
+- *Linux*
+  ```
+  python3 -m venv env
+  source env/bin/activate
+  ```
 
-*Windows*
-```
-python -m venv env
-env\Scripts\activate
-```
+- *Windows CMD*
+  ```
+  python -m venv env
+  env\Scripts\activate
+  ```
+
+- *Windows PowerShell*
+  ```
+  python -m venv env
+  env\Scripts\activate
+  ```
 
 **3) Установка зависимостей**  
 
-*С поддержкой CPU*
-```
-pip install -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
-```
+- *С поддержкой CPU*
+  ```
+  pip install -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+  ```
 
-*С поддержкой CUDA 12.4*
-```
-pip install -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124
-```
+- *С поддержкой CUDA 12.4*
+  ```
+  pip install -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124
+  ```
 
 Для установки `llama-cpp-python` на Windows с поддержкой CUDA нужно предварительно установить [Visual Studio 2022 Community](https://visualstudio.microsoft.com/ru/downloads/) и [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit-archive), как например указано в этой [инструкции](https://github.com/abetlen/llama-cpp-python/discussions/871#discussion-5812096)  
 Для полной переустановки использовать команду
@@ -128,11 +136,13 @@ pip install --force-reinstall --no-cache-dir -r requirements.txt --extra-index-u
 Инструкции по установке [llama-cpp-python](https://github.com/abetlen/llama-cpp-python?tab=readme-ov-file#installation-configuration) для других версий и систем
 
 **4) Запуск сервера Gradio**  
+
 ```
 python3 app.py
 ```
 После запуска сервера перейти в браузере по адресу http://localhost:7860/  
 Приложение будет доступно через некоторое время (после первоначальной загрузки модели в директорию `./models`)
+
 
 ---
 ## 🐳 Установка и запуск через Docker
@@ -142,15 +152,15 @@ python3 app.py
 
 ### 🏃 Запуск контейнера из образа Docker HUB
 
-*С поддержкой CPU*
-```
-docker run -it -p 7860:7860 -v ./models:/app/models sergey21000/gradio-llamacpp-chatbot:cpu
-```
+- *С поддержкой CPU*
+  ```
+  docker run -it -p 7860:7860 -v ./models:/app/models sergey21000/gradio-llamacpp-chatbot:cpu
+  ```
 
-*С поддержкой CUDA 12.5*
-```
-docker run -it --gpus all -p 7860:7860 -v ./models:/app/models sergey21000/gradio-llamacpp-chatbot:cuda
-```
+- *С поддержкой CUDA 12.5*
+  ```
+  docker run -it --gpus all -p 7860:7860 -v ./models:/app/models sergey21000/gradio-llamacpp-chatbot:cuda
+  ```
 
 
 ### 🏗️ Сборка своего образа и запуск контейнера
@@ -163,29 +173,25 @@ cd gradio-llamacpp-chatbot
 
 **2) Сборка образа и запуск контейнера**
 
-*С поддержкой CPU*
+- *С поддержкой CPU*  
+  Сборка образа
+  ```
+  docker build -t gradio-llamacpp-chatbot:cpu -f Dockerfile-cpu .
+  ```
+  Запуск контейнера
+  ```
+  docker run -it -p 7860:7860 -v ./models:/app/models gradio-llamacpp-chatbot:cpu
+  ```
 
-Сборка образа
-```
-docker build -t gradio-llamacpp-chatbot:cpu -f Dockerfile-cpu .
-```
-
-Запуск контейнера
-```
-docker run -it -p 7860:7860 -v ./models:/app/models gradio-llamacpp-chatbot:cpu
-```
-
-*С поддержкой CUDA*
-
-Сборка образа
-```
-docker build -t gradio-llamacpp-chatbot:cuda -f Dockerfile-cuda .
-```
-
-Запуск контейнера
-```
-docker run -it --gpus all -p 7860:7860 -v ./models:/app/models gradio-llamacpp-chatbot:cuda
-```
+- *С поддержкой CUDA*  
+  Сборка образа
+  ```
+  docker build -t gradio-llamacpp-chatbot:cuda -f Dockerfile-cuda .
+  ```
+  Запуск контейнера
+  ```
+  docker run -it --gpus all -p 7860:7860 -v ./models:/app/models gradio-llamacpp-chatbot:cuda
+  ```
 
 После запуска сервера перейти в браузере по адресу http://localhost:7860/  
 Приложение будет доступно после первоначальной загрузки модели в директорию `./models`
