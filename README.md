@@ -112,7 +112,7 @@ cd gradio-llamacpp-chatbot
 - *Windows PowerShell*
   ```
   python -m venv env
-  env\Scripts\activate
+  env\Scripts\activate.ps1
   ```
 
 **3) Установка зависимостей**  
