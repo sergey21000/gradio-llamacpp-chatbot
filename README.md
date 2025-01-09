@@ -66,8 +66,8 @@
 Чтобы изменить LLM модель, необходимо вставить прямую ссылку на модель в формате GGUF на странице приложения `Load model` 
 
 Где искать LLM модели в формате GGUF
-- [bartowski](https://huggingface.co/bartowski?search_models=GGUF) 
-- [mradermacher](https://huggingface.co/mradermacher?search_models=GGUF) 
+- [bartowski](https://huggingface.co/bartowski) 
+- [mradermacher](https://huggingface.co/mradermacher) 
 - [Поиск на HuggingFace](https://huggingface.co/models?pipeline_tag=text-generation&library=gguf&sort=trending)
 
 
