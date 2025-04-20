@@ -150,6 +150,7 @@ python3 app.py
 ---
 ## 🐳 Установка и запуск через Docker
 
+> [!NOTE]  
 Для запуска приложения с поддержкой GPU CUDA необходима установка [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installation).
 
 
