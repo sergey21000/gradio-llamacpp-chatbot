@@ -4,9 +4,30 @@ from typing import Union, List, Dict, Tuple, Optional
 from tqdm import tqdm
 
 import requests
-import gradio as gr
 from llama_cpp import Llama
+import gradio as gr
 
+
+
+# ================== VARIABLES =============================
+
+MODELS_PATH = Path('models')
+MODELS_PATH.mkdir(exist_ok=True)
+DEFAULT_GGUF_URL = 'https://huggingface.co/bartowski/google_gemma-3-1b-it-GGUF/resolve/main/google_gemma-3-1b-it-Q8_0.gguf'
+
+
+GENERATE_KWARGS = dict(
+    temperature=0.2,
+    top_p=0.95,
+    top_k=40,
+    repeat_penalty=1.0,
+    )
+
+LLAMA_MODEL_KWARGS = dict(
+    n_gpu_layers=-1,
+    verbose=False,
+    n_ctx=4096,
+)
 
 # ================== ANNOTATIONS ========================
 
@@ -61,7 +82,7 @@ def download_gguf_and_init_model(gguf_url: str, model_dict: MODEL_DICT) -> Tuple
         log += f'Model file {gguf_filename} loaded, initializing model...\n'
 
     progress(0.7, desc='Шаг 2/2: Model initialization')
-    model = Llama(model_path=str(model_path), n_gpu_layers=-1, verbose=True)
+    model = Llama(model_path=str(model_path), **LLAMA_MODEL_KWARGS)
     model_dict = {'model': model}
     support_system_role = 'System role not supported' not in model.metadata['tokenizer.chat_template']
     log += f'Model {gguf_filename} initialized\n'
@@ -70,7 +91,7 @@ def download_gguf_and_init_model(gguf_url: str, model_dict: MODEL_DICT) -> Tuple
 
 def user_message_to_chatbot(user_message: str, chatbot: CHAT_HISTORY) -> Tuple[str, CHAT_HISTORY]:
     if user_message:
-        chatbot.append({'role': 'user', 'metadata': {'title': None}, 'content': user_message})
+        chatbot.append({'role': 'user', 'content': user_message})
     return '', chatbot
 
 
@@ -96,7 +117,7 @@ def bot_response_to_chatbot(
 
     messages = []
     if support_system_role and system_prompt:
-        messages.append({'role': 'system', 'metadata': {'title': None}, 'content': system_prompt})
+        messages.append({'role': 'system', 'content': system_prompt})
 
     if history_len != 0:
         messages.extend(chatbot[:-1][-(history_len*2):])
@@ -116,7 +137,7 @@ def bot_response_to_chatbot(
         **gen_kwargs,
         )
 
-    chatbot.append({'role': 'assistant', 'metadata': {'title': None}, 'content': ''})
+    chatbot.append({'role': 'assistant', 'content': ''})
     for chunk in stream_response:
         token = chunk['choices'][0]['delta'].get('content')
         if token is not None:
@@ -139,22 +160,14 @@ def get_generate_args(do_sample: bool) -> List[gr.component]:
     return generate_args
 
 
-# ================== VARIABLES =============================
-
-MODELS_PATH = Path('models')
-MODELS_PATH.mkdir(exist_ok=True)
-DEFAULT_GGUF_URL = 'https://huggingface.co/bartowski/gemma-2-2b-it-GGUF/resolve/main/gemma-2-2b-it-Q8_0.gguf'
+# =============== INIT MODEL =============================
 
 start_model_dict, start_support_system_role, start_load_log = download_gguf_and_init_model(
     gguf_url=DEFAULT_GGUF_URL, model_dict={},
     )
 
-GENERATE_KWARGS = dict(
-    temperature=0.2,
-    top_p=0.95,
-    top_k=40,
-    repeat_penalty=1.0,
-    )
+
+# ================== INTERFACE =============================
 
 theme = gr.themes.Base(primary_hue='green', secondary_hue='yellow', neutral_hue='zinc').set(
     loader_color='rgb(0, 255, 0)',
@@ -163,10 +176,14 @@ theme = gr.themes.Base(primary_hue='green', secondary_hue='yellow', neutral_hue=
     button_secondary_background_fill_dark='green',
 )
 
-css = None
-# css = '.gradio-container {width: 60% !important}'
+# css = None
+css = '''
+.gradio-container {
+    width: 70% !important;
+    margin: 0 auto !important;
+}
+'''
 
-# ================== INTERFACE =============================
 with gr.Blocks(theme=theme, css=css) as interface:
     model_dict = gr.State(start_model_dict)
     support_system_role = gr.State(start_support_system_role)

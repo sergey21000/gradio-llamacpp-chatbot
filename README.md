@@ -77,7 +77,8 @@
 - [python](https://www.python.org/) >= 3.10
 - [llama-cpp-python](https://github.com/abetlen/llama-cpp-python) для инференса моделей в формате GGUF
 - [gradio](https://github.com/gradio-app/gradio) для написания веб-интерфейса
-- [Модель gemma-2-2b](https://huggingface.co/bartowski/gemma-2-2b-it-GGUF) в формате GGUF в качестве LLM модели по умолчанию
+- [Модель gemma-3-1b](https://huggingface.co/bartowski/google_gemma-3-1b-it-GGUF) `google_gemma-3-1b-it-Q8_0.gguf` в формате GGUF в качестве LLM модели по умолчанию
+
 
 Работоспособность приложения проверялась на следующих ОС и версиях Python
 - Ubuntu 22.04, python 3.10.12
@@ -119,19 +120,21 @@ cd gradio-llamacpp-chatbot
 
 - *С поддержкой CPU*
   ```
-  pip install -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+  pip install -r requirements.txt
   ```
 
-- *С поддержкой CUDA 12.4*
-  ```
-  pip install -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124
-  ```
+- *С поддержкой CUDA*
+  - Linux
+    ```
+    CMAKE_ARGS="-DGGML_CUDA=on pip install -r requirements.txt
+    ```
+  - Windows CMD
+    ```
+    set FORCE_CMAKE=1 && set CMAKE_ARGS=-DGGML_CUDA=on -DLLAMA_AVX=off -DLLAMA_AVX2=off -DLLAMA_FMA=off
+    pip install -r requirements.txt
+    ```
 
 Для установки `llama-cpp-python` на Windows с поддержкой CUDA нужно предварительно установить [Visual Studio 2022 Community](https://visualstudio.microsoft.com/ru/downloads/) и [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit-archive), как например указано в этой [инструкции](https://github.com/abetlen/llama-cpp-python/discussions/871#discussion-5812096)  
-Для полной переустановки использовать команду
-```
-pip install --force-reinstall --no-cache-dir -r requirements.txt --extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cu124
-```
 
 Инструкции по установке [llama-cpp-python](https://github.com/abetlen/llama-cpp-python?tab=readme-ov-file#installation-configuration) для других версий и систем
 
@@ -154,12 +157,16 @@ python3 app.py
 
 - *С поддержкой CPU*
   ```
-  docker run -it -p 7860:7860 -v ./models:/app/models sergey21000/gradio-llamacpp-chatbot:cpu
+  docker run -it -p 7860:7860 \
+	-v ./models:/app/models \
+	sergey21000/gradio-llamacpp-chatbot:cpu-v1.0
   ```
 
-- *С поддержкой CUDA 12.5*
+- *С поддержкой CUDA 12.6*
   ```
-  docker run -it --gpus all -p 7860:7860 -v ./models:/app/models sergey21000/gradio-llamacpp-chatbot:cuda
+  docker run -it --gpus all -p 7860:7860 \
+	-v ./models:/app/models \
+	sergey21000/gradio-llamacpp-chatbot:pytorch2.6.0-cuda12.6-v1.0
   ```
 
 
@@ -176,23 +183,30 @@ cd gradio-llamacpp-chatbot
 - *С поддержкой CPU*  
   Сборка образа
   ```
-  docker build -t gradio-llamacpp-chatbot:cpu -f Dockerfile-cpu .
+  docker build -t gradio-llamacpp-chatbot:cpu-v1.0 -f Dockerfile-cpu .
   ```
   Запуск контейнера
   ```
-  docker run -it -p 7860:7860 -v ./models:/app/models gradio-llamacpp-chatbot:cpu
+  docker run -it -p 7860:7860 -v ./models:/app/models gradio-llamacpp-chatbot:cpu-v1.0
   ```
 
 - *С поддержкой CUDA*  
   Сборка образа
+  - Сборка образа на основе образа Nvidia
   ```
-  docker build -t gradio-llamacpp-chatbot:cuda -f Dockerfile-cuda .
+  docker build -t gradio-llamacpp-chatbot:nvidia-cuda12.5-v1.0 -f Dockerfile-cuda-nvidia .
+  ```
+  - Сборка образа на основе образа Pytorch
+  ```
+  docker build -t gradio-llamacpp-chatbot:pytorch2.6.0-cuda12.6-v1.0 -f Dockerfile-cuda-pytorch .
   ```
   Запуск контейнера
   ```
-  docker run -it --gpus all -p 7860:7860 -v ./models:/app/models gradio-llamacpp-chatbot:cuda
+  docker run -it --gpus all -p 7860:7860 \
+	-v ./models:/app/models \
+	gradio-llamacpp-chatbot:pytorch2.6.0-cuda12.6-v1.0
   ```
-
+  
 После запуска сервера перейти в браузере по адресу http://localhost:7860/  
 Приложение будет доступно после первоначальной загрузки модели в директорию `./models`
 

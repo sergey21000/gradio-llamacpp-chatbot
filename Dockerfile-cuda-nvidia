@@ -1,0 +1,33 @@
+ARG CUDA_IMAGE="12.5.0-devel-ubuntu22.04"
+FROM nvidia/cuda:${CUDA_IMAGE} AS builder
+
+RUN apt-get update \
+    && apt-get install -y python3 python3-pip git ca-certificates ninja-build \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ENV CUDA_DOCKER_ARCH=all
+ENV GGML_CUDA=1
+ENV CMAKE_ARGS="-DGGML_CUDA=on"
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+ARG CUDA_IMAGE="12.5.0-runtime-ubuntu22.04"
+FROM nvidia/cuda:${CUDA_IMAGE}
+
+RUN apt-get update \
+    && apt-get install -y python3 python3-pip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+ARG PYTHON_VERSION=3.10
+COPY --from=builder /usr/local/lib/python${PYTHON_VERSION}/dist-packages /usr/local/lib/python${PYTHON_VERSION}/dist-packages
+
+ENV LD_LIBRARY_PATH="/usr/local/cuda-12.5/targets/x86_64-linux/lib/:${LD_LIBRARY_PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/lib/python${PYTHON_VERSION}/dist-packages/nvidia/nvjitlink/lib:$LD_LIBRARY_
+PATH"
+WORKDIR /app
+
+COPY app.py .
+
+EXPOSE 7860
+CMD ["python3", "app.py"]

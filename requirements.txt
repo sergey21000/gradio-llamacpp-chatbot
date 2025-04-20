@@ -1,2 +1,2 @@
-llama_cpp_python==0.2.90
+llama_cpp_python==0.3.8
 gradio>5
