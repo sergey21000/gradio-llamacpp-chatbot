@@ -167,7 +167,7 @@ python3 app.py
   ```
   docker run -it --gpus all -p 7860:7860 \
 	-v ./models:/app/models \
-	sergey21000/gradio-llamacpp-chatbot:nvidia-cuda12.6-v1.0
+	sergey21000/gradio-llamacpp-chatbot:nvidia-cuda12.5-v1.0
   ```
 
 
@@ -202,7 +202,7 @@ cd gradio-llamacpp-chatbot
   ```
   docker run -it --gpus all -p 7860:7860 \
 	-v ./models:/app/models \
-	gradio-llamacpp-chatbot:nvidia-cuda12.6-v1.0
+	gradio-llamacpp-chatbot:nvidia-cuda12.5-v1.0
   ```
   
 После запуска сервера перейти в браузере по адресу http://localhost:7860/  
