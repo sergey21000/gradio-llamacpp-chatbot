@@ -167,7 +167,7 @@ python3 app.py
   ```
   docker run -it --gpus all -p 7860:7860 \
 	-v ./models:/app/models \
-	sergey21000/gradio-llamacpp-chatbot:pytorch2.6.0-cuda12.6-v1.0
+	sergey21000/gradio-llamacpp-chatbot:nvidia-cuda12.6-v1.0
   ```
 
 
@@ -182,6 +182,7 @@ cd gradio-llamacpp-chatbot
 **2) Сборка образа и запуск контейнера**
 
 - *С поддержкой CPU*  
+
   Сборка образа
   ```
   docker build -t gradio-llamacpp-chatbot:cpu-v1.0 -f Dockerfile-cpu .
@@ -192,20 +193,16 @@ cd gradio-llamacpp-chatbot
   ```
 
 - *С поддержкой CUDA*  
-  Сборка образа
-  - Сборка образа на основе образа Nvidia
+
+  Сборка образа на основе образа Nvidia
   ```
   docker build -t gradio-llamacpp-chatbot:nvidia-cuda12.5-v1.0 -f Dockerfile-cuda-nvidia .
-  ```
-  - Сборка образа на основе образа Pytorch
-  ```
-  docker build -t gradio-llamacpp-chatbot:pytorch2.6.0-cuda12.6-v1.0 -f Dockerfile-cuda-pytorch .
   ```
   Запуск контейнера
   ```
   docker run -it --gpus all -p 7860:7860 \
 	-v ./models:/app/models \
-	gradio-llamacpp-chatbot:pytorch2.6.0-cuda12.6-v1.0
+	gradio-llamacpp-chatbot:nvidia-cuda12.6-v1.0
   ```
   
 После запуска сервера перейти в браузере по адресу http://localhost:7860/  
