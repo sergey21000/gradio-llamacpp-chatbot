@@ -138,7 +138,7 @@ cd gradio-llamacpp-chatbot
 
 В случае ошибки при установке `llama-cpp-python` воспользоваться поиском по [issue](https://github.com/abetlen/llama-cpp-python/issues), например [issues/1963](https://github.com/abetlen/llama-cpp-python/issues/1963) с командой установки `llama-cpp-python` на Windows 11
 
-Инструкции по установке [llama-cpp-python](https://github.com/abetlen/llama-cpp-python?tab=readme-ov-file#installation-configuration) для других версий и систем
+[Инструкции](https://github.com/abetlen/llama-cpp-python?tab=readme-ov-file#installation-configuration) по установке `llama-cpp-python` для других версий и систем
 
 **4) Запуск сервера Gradio**  
 
