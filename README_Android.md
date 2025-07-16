@@ -84,7 +84,7 @@ pip install --upgrade pip
 Создать виртуальное окружение можно только в директориях `Ubuntu` (в памяти телефона `/sdcard` нельзя)  
 Создавать виртуальное окружение необязательно
 
-<ins><b>Вариант 1</b></ins> клонировать репозиторий через Git в текущее расположение `/root` (либо создать пользователя в `Ubuntu` и работать с домашней директорией пользователя)  
+<ins><b>Вариант 1</b></ins> клонировать репозиторий через Git в текущее расположение `/root` (либо создать пользователя в `Ubuntu` и работать с домашней директорией пользователя)  
 ```
 git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
 python3 -m venv env
@@ -153,7 +153,6 @@ python3 app.py
 <img src="./screenshots/termux_settings2.jpg" alt="Настройка Termux 2" width=40%>
 </details>
 
-
 <details>
 <summary>Запуск Ubuntu из терминала Termux и запуск приложения</summary>
 <img src="./screenshots/start_bot_in_android.jpg" alt="Start bot in Android" width=40%>
@@ -201,14 +200,11 @@ ssh-keygen
 Ключи сохраняются на Linux по пути `~/.ssh/`  
 
 **3) Вывести содержимое публичного ключа `id_rsa.pub` на ПК**
- - Windows
-  ```
-  cat %USERPROFILE%\.ssh\id_rsa.pub
-  ```
- - Linux
-  ```
-  cat ~/.ssh/id_rsa.pub
-  ```
+
+Команда для Windows PowerShell или Linux
+```
+cat ~/.ssh/id_rsa.pub
+```
 
 **4) Скопировать содержимое ключа и любым удобным способом перекинуть на телефон (например через Избранное Telegram)**  
 Затем в телефоне скопировать содержимое и вставить его в файл `~/.ssh/authorized_keys` в телефоне  
