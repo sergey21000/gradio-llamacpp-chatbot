@@ -174,7 +174,7 @@ python3 app.py
   ```
   docker run -it --gpus all -p 7860:7860 \
 	-v ./model:/app/model \
-	sergey21000/gradio-llamacpp-chatbot:nvidia-cuda12.5-v1.0
+	sergey21000/gradio-llamacpp-chatbot:nvidia-cuda12.9-v1.0
   ```
 
 
@@ -203,13 +203,13 @@ cd gradio-llamacpp-chatbot
 
   Сборка образа на основе образа Nvidia
   ```
-  docker build -t gradio-llamacpp-chatbot:nvidia-cuda12.5-v1.0 -f Dockerfile-cuda-nvidia .
+  docker build -t gradio-llamacpp-chatbot:nvidia-cuda12.9-v1.0 -f Dockerfile-cuda-nvidia .
   ```
   Запуск контейнера
   ```
   docker run -it --gpus all -p 7860:7860 \
 	-v ./model:/app/model \
-	gradio-llamacpp-chatbot:nvidia-cuda12.5-v1.0
+	gradio-llamacpp-chatbot:nvidia-cuda12.9-v1.0
   ```
   
 После запуска сервера перейти в браузере по адресу http://127.0.0.1:7860/  
