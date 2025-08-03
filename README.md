@@ -138,14 +138,7 @@ pip install https://github.com/sergey21000/llama-cpp-python-wheels/releases/down
 pip install -r requirements.txt
 ```
 
-**5) Установка Gradio**  
-
-Установка Gradio и прочих зависимостей
-```
-pip install -r requirements.txt
-```
-
-**5) Запуск сервера Gradio**  
+**4) Запуск сервера Gradio**  
 
 ```
 python3 app.py
