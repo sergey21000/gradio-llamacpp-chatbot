@@ -20,7 +20,7 @@ RUN apt-get update \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/wheels /wheels
-RUN pip install --no-cache-dir /wheels/* && rm -rf /wheels
+RUN pip install --no-cache-dir --break-system-packages /wheels/* && rm -rf /wheels
 
 WORKDIR /app
 COPY app.py .
