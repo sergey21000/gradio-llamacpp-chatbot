@@ -23,7 +23,7 @@ COPY --from=builder /app/wheels /wheels
 RUN pip install --no-cache-dir --break-system-packages /wheels/* && rm -rf /wheels
 
 WORKDIR /app
-COPY app.py .
+COPY app.py utils.py init_model.py config.py .
 
 ENV GRADIO_SERVER_NAME=0.0.0.0
 EXPOSE 7860
