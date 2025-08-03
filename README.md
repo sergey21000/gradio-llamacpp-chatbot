@@ -189,24 +189,24 @@ cd gradio-llamacpp-chatbot
   ```
   Запуск контейнера
   ```
-  docker run -it -p 7860:7860 -v ./model:/app/model gradio-llamacpp-chatbot:cpu-v1.0
+  docker run -it -p 7860:7860 -v ./model:/app/model gradio-llamacpp-chatbot:cpu-latest
   ```
 
 - *С поддержкой CUDA*  
 
   Сборка образа на основе образа Nvidia
   ```
-  docker build -t gradio-llamacpp-chatbot:nvidia-cuda12.9-v1.0 -f Dockerfile-cuda-nvidia .
+  docker build -t gradio-llamacpp-chatbot:nvidia-cuda12.9-v1.0 -f Dockerfile-cuda .
   ```
   Запуск контейнера
   ```
   docker run -it --gpus all -p 7860:7860 \
 	-v ./model:/app/model \
-	gradio-llamacpp-chatbot:nvidia-cuda12.9-v1.0
+	gradio-llamacpp-chatbot:nvidia-cuda12.9-latest
   ```
   
 После запуска сервера перейти в браузере по адресу http://127.0.0.1:7860/  
-Приложение будет доступно после первоначальной загрузки модели в директорию `./models`
+Приложение будет доступно после первоначальной загрузки модели в директорию `./model`
 
 ---
 Приложение создавалось для тестирования LLM моделей как любительский проект  
