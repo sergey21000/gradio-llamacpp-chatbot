@@ -46,12 +46,6 @@
 ![Главная страница](./screenshots/main_page.png)
 </details>
 
-<details>
-<summary>Страница загрузки моделей</summary>
-
-![Страница загрузки моделей](./screenshots/load_models_page.png)
-</details>
-
 
 ---
 ## 🚀 Функционал
@@ -60,10 +54,10 @@
 - Настройка параметров генерации (`temperature`, `top_k`, `top_p`, `repetition_penalty`)
 - Возможность указать системный промт (если модель его не поддерживает это будет отображено)
 - Выбор количества учитываемых сообщений в истории при подаче промта в модель
-- Возможность выбора моделей в формате GGUF по URL ссылке с индикацией прогресса загрузки
+- Возможность выбора моделей в формате GGUF перед запуском
 
-После запуска приложения происходит загрузка LLM модели по умолчанию (`gemma-2-2b-it-Q8_0.gguf`, 2.7 GB) в папку `./models`  
-Чтобы изменить LLM модель, необходимо вставить прямую ссылку на модель в формате GGUF на странице приложения `Load model` 
+После запуска приложения происходит загрузка LLM модели по умолчанию (`google_gemma-3-1b-it-Q8_0.gguf`, 1 GB) в папку `./models`  
+Изменить LLM модель перед запуском приложения можно в файле `config.py`, для необходимо заменить название репозитория и название файла модели в формате GGUF 
 
 Где искать LLM модели в формате GGUF
 - [bartowski](https://huggingface.co/bartowski) 
@@ -72,7 +66,7 @@
 
 
 ---
-## 🏗 Стек технологий
+## 🏗 Технологии
 
 - [python](https://www.python.org/) >= 3.10
 - [llama-cpp-python](https://github.com/abetlen/llama-cpp-python) для инференса моделей в формате GGUF
@@ -81,9 +75,10 @@
 
 
 Работоспособность приложения проверялась на следующих ОС и версиях Python
-- Ubuntu 22.04, python 3.10.12
-- Windows 10, python 3.12.2
-- Android 11 (MIUI 12), Ubuntu 22.04, python 3.10.12
+- Ubuntu 22.04, python 3.11, CUDA 12.5 (Google Colab)
+- Windows 10, python 3.12, CUDA 12.8
+- Android 11 (MIUI 12), Termux, python 3.12
+- Android 11 (MIUI 12), Ubuntu 22.04 (Andronix), python 3.10
 
 
 ---
@@ -116,36 +111,46 @@ cd gradio-llamacpp-chatbot
   env\Scripts\activate.ps1
   ```
 
-**3) Установка зависимостей**  
+**3) Установка llama-cpp-python**  
 
 - *С поддержкой CPU*
   ```
-  pip install -r requirements.txt
+  pip install llama-cpp-python
   ```
 
 - *С поддержкой CUDA*
   - Linux
     ```
-    CMAKE_ARGS="-DGGML_CUDA=on pip install -r requirements.txt
+    CMAKE_ARGS="-DGGML_CUDA=on pip install llama-cpp-python
     ```
   - Windows CMD
     ```
     set CMAKE_ARGS=-DGGML_CUDA=on
-    pip install -r requirements-cuda.txt
+	pip install llama-cpp-python
     ```
 
-Для установки `llama-cpp-python` на Windows с поддержкой CUDA нужно предварительно установить [Visual Studio 2022 Community](https://visualstudio.microsoft.com/ru/downloads/) и [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit-archive), как например указано в этой [инструкции](https://github.com/abetlen/llama-cpp-python/discussions/871#discussion-5812096)  
+> [!NOTE]
+> Для установки `llama-cpp-python` на Windows с поддержкой CUDA необходимо установить [Visual Studio 2022 Community](https://visualstudio.microsoft.com/ru/downloads/) и [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit-archive), как например показано в [этой](https://github.com/abetlen/llama-cpp-python/discussions/871#discussion-5812096) или [этой](https://github.com/Granddyser/windows-llama-cpp-python-cuda-guide?tab=readme-ov-file#12-visual-studio-2019-installation-and-configuration) инструкциях
 
-В случае ошибки при установке `llama-cpp-python` воспользоваться поиском по [issue](https://github.com/abetlen/llama-cpp-python/issues), например [issues/1963](https://github.com/abetlen/llama-cpp-python/issues/1963) с командой установки `llama-cpp-python` на Windows 11
+Для более быстрой установки можно воспользоваться готовыми колесами, например [отсюда](https://github.com/sergey21000/llama-cpp-python-wheels?tab=readme-ov-file#installation-examples) или [отсюда](https://github.com/abetlen/llama-cpp-python/releases)  
+Например установка на *Linux x86_64 / Python 3.12 с поддержкой CUDA 12.9*
+```
+pip install https://github.com/sergey21000/llama-cpp-python-wheels/releases/download/v0.3.14/llama_cpp_python-0.3.14-cp312-cp312-linux_x86_64.cu129.whl
+```
 
-[Инструкции](https://github.com/abetlen/llama-cpp-python?tab=readme-ov-file#installation-configuration) по установке `llama-cpp-python` для других версий и систем
+**5) Установка Gradio**  
 
-**4) Запуск сервера Gradio**  
+Установка Gradio и прочих зависимостей
+```
+pip install -r requirements-base.txt
+```
+
+**5) Запуск сервера Gradio**  
 
 ```
 python3 app.py
 ```
-После запуска сервера перейти в браузере по адресу http://localhost:7860/  
+После запуска сервера перейти в браузере по адресу http://127.0.0.1:7860/  
 Приложение будет доступно через некоторое время (после первоначальной загрузки модели в директорию `./models`)
 
 
@@ -161,14 +166,14 @@ python3 app.py
 - *С поддержкой CPU*
   ```
   docker run -it -p 7860:7860 \
-	-v ./models:/app/models \
+	-v ./model:/app/model \
 	sergey21000/gradio-llamacpp-chatbot:cpu-v1.0
   ```
 
-- *С поддержкой CUDA 12.6*
+- *С поддержкой CUDA*
   ```
   docker run -it --gpus all -p 7860:7860 \
-	-v ./models:/app/models \
+	-v ./model:/app/model \
 	sergey21000/gradio-llamacpp-chatbot:nvidia-cuda12.5-v1.0
   ```
 
@@ -191,7 +196,7 @@ cd gradio-llamacpp-chatbot
   ```
   Запуск контейнера
   ```
-  docker run -it -p 7860:7860 -v ./models:/app/models gradio-llamacpp-chatbot:cpu-v1.0
+  docker run -it -p 7860:7860 -v ./model:/app/model gradio-llamacpp-chatbot:cpu-v1.0
   ```
 
 - *С поддержкой CUDA*  
@@ -203,11 +208,11 @@ cd gradio-llamacpp-chatbot
   Запуск контейнера
   ```
   docker run -it --gpus all -p 7860:7860 \
-	-v ./models:/app/models \
+	-v ./model:/app/model \
 	gradio-llamacpp-chatbot:nvidia-cuda12.5-v1.0
   ```
   
-После запуска сервера перейти в браузере по адресу http://localhost:7860/  
+После запуска сервера перейти в браузере по адресу http://127.0.0.1:7860/  
 Приложение будет доступно после первоначальной загрузки модели в директорию `./models`
 
 ---
