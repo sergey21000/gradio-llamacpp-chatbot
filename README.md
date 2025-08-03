@@ -5,8 +5,6 @@
 
 <div align="left">
 <a href="https://huggingface.co/spaces/sergey21000/gradio-llamacpp-chatbot"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow" alt="Hugging Face Spaces"></a>
-<a href="https://hub.docker.com/r/sergey21000/gradio-llamacpp-chatbot"><img src="https://img.shields.io/badge/Docker-Hub-blue?logo=docker" alt="Docker Hub "></a>
-</div>
 
 Чат-бот на `llama-cpp-python` с веб-интерфейсом на `Gradio`
 
@@ -111,38 +109,39 @@ cd gradio-llamacpp-chatbot
   env\Scripts\activate.ps1
   ```
 
-**3) Установка llama-cpp-python**  
+**3) Установка зависимостей**  
 
 - *С поддержкой CPU*
   ```
-  pip install llama-cpp-python
+  pip install -r requirements.txt
   ```
 
 - *С поддержкой CUDA*
   - Linux
     ```
-    CMAKE_ARGS="-DGGML_CUDA=on pip install llama-cpp-python
+    CMAKE_ARGS="-DGGML_CUDA=on pip install -r requirements.txt
     ```
   - Windows CMD
     ```
     set CMAKE_ARGS=-DGGML_CUDA=on
-	pip install llama-cpp-python
+	pip install -r requirements.txt
     ```
 
 > [!NOTE]
 > Для установки `llama-cpp-python` на Windows с поддержкой CUDA необходимо установить [Visual Studio 2022 Community](https://visualstudio.microsoft.com/ru/downloads/) и [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit-archive), как например показано в [этой](https://github.com/abetlen/llama-cpp-python/discussions/871#discussion-5812096) или [этой](https://github.com/Granddyser/windows-llama-cpp-python-cuda-guide?tab=readme-ov-file#12-visual-studio-2019-installation-and-configuration) инструкциях
 
-Для более быстрой установки можно воспользоваться готовыми колесами, например [отсюда](https://github.com/sergey21000/llama-cpp-python-wheels?tab=readme-ov-file#installation-examples) или [отсюда](https://github.com/abetlen/llama-cpp-python/releases)  
+Для более быстрой установки `llama-cpp-python` можно воспользоваться готовыми колесами, например [отсюда](https://github.com/sergey21000/llama-cpp-python-wheels?tab=readme-ov-file#installation-examples) или [отсюда](https://github.com/abetlen/llama-cpp-python/releases)  
 Например установка на *Linux x86_64 / Python 3.12 с поддержкой CUDA 12.9*
 ```
 pip install https://github.com/sergey21000/llama-cpp-python-wheels/releases/download/v0.3.14/llama_cpp_python-0.3.14-cp312-cp312-linux_x86_64.cu129.whl
+pip install -r requirements.txt
 ```
 
 **5) Установка Gradio**  
 
 Установка Gradio и прочих зависимостей
 ```
-pip install -r requirements-base.txt
+pip install -r requirements.txt
 ```
 
 **5) Запуск сервера Gradio**  
@@ -167,14 +166,14 @@ python3 app.py
   ```
   docker run -it -p 7860:7860 \
 	-v ./model:/app/model \
-	sergey21000/gradio-llamacpp-chatbot:cpu-v1.0
+	ghcr.io/sergey21000/gradio-llamacpp-chatbot:cpu-latest
   ```
 
 - *С поддержкой CUDA*
   ```
   docker run -it --gpus all -p 7860:7860 \
 	-v ./model:/app/model \
-	sergey21000/gradio-llamacpp-chatbot:nvidia-cuda12.9-v1.0
+	ghcr.io/sergey21000/gradio-llamacpp-chatbot:cuda-latest
   ```
 
 

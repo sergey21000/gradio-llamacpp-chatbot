@@ -1,8 +1,8 @@
 FROM python:3.12 AS builder
 WORKDIR /app
 
-COPY requirements-base.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements-base.txt llama_cpp_python
+COPY requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt llama_cpp_python
 
 FROM python:3.12-slim
 WORKDIR /app
