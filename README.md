@@ -3,10 +3,11 @@
 ---
 # Gradio llama-cpp-python Chatbot
 
-<div align="left">
+<div align="center">
 <a href="https://huggingface.co/spaces/sergey21000/gradio-llamacpp-chatbot"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow" alt="Hugging Face Spaces"></a>
+</div>
 
-Чат-бот на `llama-cpp-python` с веб-интерфейсом на `Gradio`
+**Чат-бот на `llama-cpp-python` с веб-интерфейсом на `Gradio`**
 
 
 ---
@@ -157,7 +158,7 @@ python3 app.py
 ## 🐳 Установка и запуск через Docker
 
 > [!NOTE]  
-Для запуска приложения с поддержкой GPU CUDA необходима установка [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installation).
+> Для запуска приложения с поддержкой GPU CUDA необходима установка [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installation).
 
 
 ### 🏃 Запуск контейнера из образа Docker HUB
