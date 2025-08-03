@@ -42,8 +42,8 @@ jobs:
           pull: true
           platforms: linux/amd64
           tags: |
-            ghcr.io/sergey21000/gradio-llamacpp-chatbot-cpu:latest
-            ghcr.io/sergey21000/gradio-llamacpp-chatbot-cpu:${{ github.sha }}
+            ghcr.io/sergey21000/gradio-llamacpp-chatbot:cpu-latest
+            ghcr.io/sergey21000/gradio-llamacpp-chatbot:cpu-${{ github.sha }}
 
       - name: Build and push CUDA image
         if: ${{ github.event.inputs.target == 'cuda' || github.event.inputs.target == 'both' }}
@@ -55,5 +55,5 @@ jobs:
           pull: true
           platforms: linux/amd64
           tags: |
-            ghcr.io/sergey21000/gradio-llamacpp-chatbot-cuda:latest
-            ghcr.io/sergey21000/gradio-llamacpp-chatbot-cuda:${{ github.sha }}
+            ghcr.io/sergey21000/gradio-llamacpp-chatbot:cuda-latest
+            ghcr.io/sergey21000/gradio-llamacpp-chatbot:cuda-${{ github.sha }}
