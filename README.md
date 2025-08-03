@@ -3,12 +3,7 @@
 ---
 # Gradio llama-cpp-python Chatbot
 
-<div align="center">
-<a href="https://huggingface.co/spaces/sergey21000/gradio-llamacpp-chatbot"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow" alt="Hugging Face Spaces"></a>
-</div>
-
 **Чат-бот на `llama-cpp-python` с веб-интерфейсом на `Gradio`**
-
 
 ---
 ## 📋 Содержание
@@ -26,6 +21,10 @@
 
 ---
 ## 📽 Демонстрация
+
+<div align="center">
+<a href="https://huggingface.co/spaces/sergey21000/gradio-llamacpp-chatbot"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow" alt="Hugging Face Spaces"></a>
+</div>
 
 В Google Colab <a href="https://colab.research.google.com/drive/1tClehCQILXLSXYqIZII569S1eTWnf8hZ"><img src="https://img.shields.io/static/v1?message=Open%20in%20Colab&logo=googlecolab&labelColor=5c5c5c&color=0f80c1&label=%20" alt="Open in Colab"></a> ноутбуке дополнительно реализовано:  
  - Код приложения с комментариями
@@ -221,3 +220,4 @@ cd gradio-llamacpp-chatbot
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
+
