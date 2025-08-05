@@ -84,7 +84,7 @@
 
 **1) Клонирование репозитория**  
 
-```
+```sh
 git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
 cd gradio-llamacpp-chatbot
 ```
@@ -92,19 +92,19 @@ cd gradio-llamacpp-chatbot
 **2) Создание и активация виртуального окружения (опционально)**
 
 - *Linux*
-  ```
+  ```sh
   python3 -m venv env
   source env/bin/activate
   ```
 
 - *Windows CMD*
-  ```
+  ```sh
   python -m venv env
   env\Scripts\activate
   ```
 
 - *Windows PowerShell*
-  ```
+  ```powershell
   python -m venv env
   env\Scripts\activate.ps1
   ```
@@ -112,17 +112,17 @@ cd gradio-llamacpp-chatbot
 **3) Установка зависимостей**  
 
 - *С поддержкой CPU*
-  ```
+  ```sh
   pip install -r requirements.txt
   ```
 
 - *С поддержкой CUDA*
   - Linux
-    ```
+    ```sh
     CMAKE_ARGS="-DGGML_CUDA=on pip install -r requirements.txt
     ```
   - Windows CMD
-    ```
+    ```sh
     set CMAKE_ARGS=-DGGML_CUDA=on
 	pip install -r requirements.txt
     ```
@@ -132,14 +132,14 @@ cd gradio-llamacpp-chatbot
 
 Для более быстрой установки `llama-cpp-python` можно воспользоваться готовыми колесами, например [отсюда](https://github.com/sergey21000/llama-cpp-python-wheels?tab=readme-ov-file#installation-examples) или [отсюда](https://github.com/abetlen/llama-cpp-python/releases)  
 Например установка на *Linux x86_64 / Python 3.12 с поддержкой CUDA 12.9*
-```
+```sh
 pip install https://github.com/sergey21000/llama-cpp-python-wheels/releases/download/v0.3.14/llama_cpp_python-0.3.14-cp312-cp312-linux_x86_64.cu129.whl
 pip install -r requirements.txt
 ```
 
 **4) Запуск сервера Gradio**  
 
-```
+```sh
 python3 app.py
 ```
 После запуска сервера перейти в браузере по адресу http://127.0.0.1:7860/  
@@ -156,14 +156,14 @@ python3 app.py
 ### 🏃 Запуск контейнера из образа Docker
 
 - *С поддержкой CPU*
-  ```
+  ```sh
   docker run -it -p 7860:7860 \
 	-v ./model:/app/model \
 	ghcr.io/sergey21000/gradio-llamacpp-chatbot:cpu-latest
   ```
 
 - *С поддержкой CUDA*
-  ```
+  ```sh
   docker run -it --gpus all -p 7860:7860 \
 	-v ./model:/app/model \
 	ghcr.io/sergey21000/gradio-llamacpp-chatbot:cuda-latest
@@ -175,7 +175,7 @@ python3 app.py
 ### 🏗 Сборка своего образа и запуск контейнера
 
 **1) Клонирование репозитория**  
-```bash
+```sh
 git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
 cd gradio-llamacpp-chatbot
 ```
@@ -185,22 +185,22 @@ cd gradio-llamacpp-chatbot
 - *С поддержкой CPU*  
 
   Сборка образа
-  ```
+  ```sh
   docker build -t gradio-llamacpp-chatbot:cpu-v1.0 -f Dockerfile-cpu .
   ```
   Запуск контейнера
-  ```
+  ```sh
   docker run -it -p 7860:7860 -v ./model:/app/model gradio-llamacpp-chatbot:cpu-latest
   ```
 
 - *С поддержкой CUDA*  
 
   Сборка образа на основе образа Nvidia
-  ```
+  ```sh
   docker build -t gradio-llamacpp-chatbot:nvidia-cuda12.9-v1.0 -f Dockerfile-cuda .
   ```
   Запуск контейнера
-  ```
+  ```sh
   docker run -it --gpus all -p 7860:7860 \
 	-v ./model:/app/model \
 	gradio-llamacpp-chatbot:nvidia-cuda12.9-latest

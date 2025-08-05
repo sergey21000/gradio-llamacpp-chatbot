@@ -30,18 +30,18 @@
 **2) Выполнить команду чтобы дать доступ `Termux` к памяти телефона**
 
 Запустить `Termux` и выполнить команду
-```
+```sh
 termux-setup-storage
 ```
 
 Проверить что `Termux` имеет доступ к памяти телефона
-```
+```sh
 ls /storage
 ```
 Если нет - отозвать и снова дать доступ к памяти телефона вручную, как описано в шаге 1
 
 **3) Установка базовых библиотек в Termux**
-```
+```sh
 pkg update && pkg upgrade
 pkg install python python-pip git nano openssh rust
 ```
@@ -75,18 +75,18 @@ pkg install python python-pip git nano openssh rust
 **1) Установка библиотек на Termux**  
 
 Установка библиотек которые необходимы для успешной компиляции `llama-cpp-python`, взято [отсюда](https://github.com/abetlen/llama-cpp-python/issues/389#issuecomment-1913374996)
-```
+```sh
 pkg install libexpat openssl python-pip python-cryptography cmake ninja autoconf automake libandroid-execinfo patchelf
 ```
 
 Создание и активация виртуального окружения (опционально)
-```
+```shsh
 python -m venv env
 source env/bin/activate
 ```
 
 Установка Python библиотек
-```
+```sh
 pip install -U pip
 pip install llama-cpp-python gradio
 ```
@@ -94,7 +94,7 @@ pip install llama-cpp-python gradio
 **2) Перенос папки проекта на Android и запуск приложения**
 
 Перенести файлы проекта на телефон любым удобным способом, например через кабель или клонирование репозитория
-```
+```sh
 git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
 cd gradio-llamacpp-chatbot
 python app.py
@@ -132,7 +132,7 @@ python app.py
 **4) Запуск `Termux`**, долгий тап по экрану - вставить скопированную команду, нажать `Enter`, начнется установка `Ubuntu` 
 
 Например для установки Ubuntu 22.04 это будет следующая команда
-```
+```sh
 pkg update -y && pkg install wget curl proot tar -y && wget \
 https://raw.githubusercontent.com/AndronixApp/AndronixOrigin/master/Installer/Ubuntu22/ubuntu22.sh -O \
 ubuntu22.sh && chmod +x ubuntu22.sh && bash ubuntu22.sh
@@ -155,7 +155,7 @@ ubuntu22.sh && chmod +x ubuntu22.sh && bash ubuntu22.sh
 **1) Установка Python и дополнительных библиотек на Ubuntu**  
 
 Команды для установки `Python` и необходимых библиотек на `Ubuntu`
-```
+```sh
 apt update
 apt install python3 python3-pip python3-venv git nano wget
 pip install --upgrade pip setuptools
@@ -169,7 +169,7 @@ pip install --upgrade pip setuptools
 Создавать виртуальное окружение необязательно
 
 <ins><b>Вариант 1</b></ins> клонировать репозиторий через Git в текущее расположение `/root` (либо создать пользователя в `Ubuntu` и работать с домашней директорией пользователя)  
-```
+```sh
 git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
 python3 -m venv env
 source env/bin/activate
@@ -182,7 +182,7 @@ python3 app.py
 Удобно когда нужно быстро поменять модель в папке `model` с помощью ПК и кабеля, но данный способ не работает с виртуальным окружением  
 
 В данном примере в основной папке телефона `\sdcard` создана папка `python` и в ней лежит папка приложения `gradio-llamacpp-chatbot`
-```
+```sh
 cd /sdcard/python/gradio-llamacpp-chatbot/
 pip install -r requirements.txt
 python3 app.py
@@ -190,7 +190,7 @@ python3 app.py
 
 <ins><b>Вариант 3</b></ins> такой же как предыдущий но с виртуальным окружением  
 Подключаем телефон к ПК, перекидываем в папку `/sdcard` папку с приложением (`gradio-llamacpp-chatbot`) и перемещаем ее в корневую директорию `Ubuntu` через терминвал командой `mv`
-```
+```sh
 mv -v /sdcard/gradio-llamacpp-chatbot ./gradio-llamacpp-chatbot
 cd gradio-llamacpp-chatbot
 python3 -m venv env
@@ -204,7 +204,7 @@ python3 app.py
 Удобно при работе через MobaXterm, поскольку по умолчанию он открывается в папке `/data/data/com.termux/files/home`, и виртуальное окружение с данным способом работает
 
 В данном примере папка с приложением `gradio-llamacpp-chatbot` перенесена через файловый менеджер MobaXterm в корневую директорию Termux
-```
+```sh
 cd /data/data/com.termux/files/home
 python3 -m venv env
 source env/bin/activate
@@ -248,12 +248,12 @@ python3 app.py
 IP адрес телефона может динамически меняться при новых подключениях  
 
 **1) Установка SSH и редактора nano на `Termux`**
-```
+```sh
 pkg install nano openssh
 ```
 
 **2) Генерация SSH ключей на ПК**
-```
+```sh
 ssh-keygen
 ```
 Далее нажимать `Enter` пока не будет написано что ключи сгенерированы  
@@ -265,49 +265,49 @@ ssh-keygen
 **3) Вывести содержимое публичного ключа `id_rsa.pub` на ПК**
 
 Команда для Windows PowerShell или Linux
-```
+```sh
 cat ~/.ssh/id_rsa.pub
 ```
 
 **4) Скопировать содержимое ключа и любым удобным способом перекинуть на телефон (например через Избранное Telegram)**  
 Затем в телефоне скопировать содержимое и вставить его в файл `~/.ssh/authorized_keys` в телефоне  
 Для этого в терминале `Termux` открываем редактор nano
-```
+```sh
 mkdir -p ~/.ssh
 nano ~/.ssh/authorized_keys
 ```
 Удерживаем тап по экрану - вставляем содержимое, и с помощью клавиатуры `Termux` нажимаем `Ctrl+S` и `Ctrl+X`
 
 **5) Остановка и запуск службы SSH в `Termux`**
-```
+```sh
 pkill sshd
 sshd
 ```
 
 **6) Узнать IP адрес телефона Android**
-```
+```sh
 ifconfig
 ```
 IP адрес написан в разделе `wlan0`, после слова `inet`, например `192.168.43.45`  
 Название может быть другое, например `wlan1` и тд  
 Можно сразу посмотреть инфо о `wlan0` командой
-```
+```sh
 ifconfig wlan0
 ```
 
 **7) Подключение из ПК с телефону - к IP адресу который узнали командой выше**
-```
+```sh
 ssh 192.168.43.45 -p 8022
 ```
 Если появится предложение ввести имя пользователя (`login as:`) - оставить пустым и нажать `Enter`
 
 Перед подключением убедиться что служба SSH в `Termux` запущена (нужно запускать ее при каждом перезапуске `Termux`)
-```
+```sh
 sshd
 ```
 
 **8) Отключить авторизацию по паролю в `Termux` чтобы можно было подключаться только через SSH (опционально)**  
-```
+```sh
 nano $PREFIX/etc/ssh/sshd_config
 ```
 Добавить или редактировать строку
@@ -318,11 +318,11 @@ PasswordAuthentication no
 *Дополнительные команды*  
 
 Отключиться от телефона
-```
+```sh
 exit
 ```
 Завершить работу службы SSH в `Termux`
-```
+```sh
 pkill sshd
 ```
 
