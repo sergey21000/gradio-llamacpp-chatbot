@@ -119,7 +119,7 @@ cd gradio-llamacpp-chatbot
 - *С поддержкой CUDA*
   - Linux
     ```sh
-    CMAKE_ARGS="-DGGML_CUDA=on pip install -r requirements.txt
+    CMAKE_ARGS="-DGGML_CUDA=on" pip install -r requirements.txt
     ```
   - Windows CMD
     ```sh
@@ -222,4 +222,5 @@ cd gradio-llamacpp-chatbot
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
+
 
