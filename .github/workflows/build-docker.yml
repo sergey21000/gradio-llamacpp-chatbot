@@ -4,9 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       target:
-        description: "Images selection (cpu, cuda, both)"
+        description: Images selection (cpu, cuda, both)
         required: true
-        default: "both"
+        default: both
+        type: choice
+        options:
+          - both
+          - cuda
+          - cpu
 
 permissions:
   contents: write
