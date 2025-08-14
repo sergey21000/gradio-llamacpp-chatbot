@@ -197,7 +197,7 @@ cd gradio-llamacpp-chatbot
 
   Сборка образа на основе образа Nvidia
   ```sh
-  docker build -t gradio-llamacpp-chatbot:nvidia-cuda12.9-v1.0 -f Dockerfile-cuda .
+  docker build -t gradio-llamacpp-chatbot:nvidia-cuda12.9 -f Dockerfile-cuda .
   ```
   Запуск контейнера
   ```sh
@@ -222,5 +222,6 @@ cd gradio-llamacpp-chatbot
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
+
 
 
