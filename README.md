@@ -159,14 +159,14 @@ python3 app.py
   ```sh
   docker run -it -p 7860:7860 \
 	-v ./model:/app/model \
-	ghcr.io/sergey21000/gradio-llamacpp-chatbot:cpu-latest
+	ghcr.io/sergey21000/gradio-llamacpp-chatbot:main-cpu
   ```
 
 - *С поддержкой CUDA*
   ```sh
   docker run -it --gpus all -p 7860:7860 \
 	-v ./model:/app/model \
-	ghcr.io/sergey21000/gradio-llamacpp-chatbot:cuda-latest
+	ghcr.io/sergey21000/gradio-llamacpp-chatbot:main-cuda
   ```
 
 Чтобы выбрать другую модель или настроить настройки - пробросить файл конфига, добавив `-v ./config.py:/app/config.py`
@@ -190,20 +190,20 @@ cd gradio-llamacpp-chatbot
   ```
   Запуск контейнера
   ```sh
-  docker run -it -p 7860:7860 -v ./model:/app/model gradio-llamacpp-chatbot:cpu-latest
+  docker run -it -p 7860:7860 -v ./model:/app/model gradio-llamacpp-chatbot:cpu
   ```
 
 - *С поддержкой CUDA*  
 
   Сборка образа на основе образа Nvidia
   ```sh
-  docker build -t gradio-llamacpp-chatbot:nvidia-cuda12.9 -f Dockerfile-cuda .
+  docker build -t gradio-llamacpp-chatbot:cuda -f Dockerfile-cuda .
   ```
   Запуск контейнера
   ```sh
   docker run -it --gpus all -p 7860:7860 \
 	-v ./model:/app/model \
-	gradio-llamacpp-chatbot:nvidia-cuda12.9-latest
+	gradio-llamacpp-chatbot:cuda
   ```
   
 После запуска сервера перейти в браузере по адресу http://127.0.0.1:7860/  
@@ -222,6 +222,4 @@ cd gradio-llamacpp-chatbot
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
-
-
 
