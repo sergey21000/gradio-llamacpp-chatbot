@@ -3,10 +3,11 @@ FROM python:3.12 AS builder
 COPY requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /wheels -r requirements.txt
 
+
 FROM python:3.12-slim
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y libgomp1 \
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
 	&& apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 COPY --from=builder /wheels /wheels
