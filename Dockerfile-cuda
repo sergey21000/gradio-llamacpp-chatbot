@@ -2,7 +2,8 @@ ARG CUDA_IMAGE="12.9.1-devel-ubuntu24.04"
 FROM nvcr.io/nvidia/cuda:${CUDA_IMAGE} AS builder
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends python3 python3-pip git ca-certificates ninja-build \
+    && apt-get install -y --no-install-recommends \
+	python3 python3-pip git ca-certificates ninja-build \
     && apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
 
 ENV CUDA_DOCKER_ARCH=all
