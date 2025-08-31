@@ -9,7 +9,7 @@ env:
   PYTHONUTF8: 1
   REPO_ID: bartowski/Qwen_Qwen3-0.6B-GGUF
   FILENAME: Qwen_Qwen3-0.6B-Q4_K_M.gguf
-  LOCAL_DIR: model
+  LOCAL_DIR: ~/.cache/huggingface/hub
 
 jobs:
   download-model:
@@ -108,3 +108,4 @@ jobs:
       - name: Test with pytest
         run: |
           python -m pytest -vs
+
