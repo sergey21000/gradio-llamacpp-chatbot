@@ -94,7 +94,7 @@ jobs:
           key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
 
       - name: Check model exists
-        run: ls -lh model
+        run: dir model
 
       - name: Install dependencies
         run: |
@@ -104,3 +104,4 @@ jobs:
       - name: Test with pytest
         run: |
           python -m pytest -vs
+
