@@ -129,7 +129,7 @@ cd gradio-llamacpp-chatbot
   - Windows PowerShell
     ```powershell
     $env:CMAKE_ARGS='-DGGML_CUDA=on'
-    pip install -r requirements-cuda.txt
+    pip install -r requirements.txt
     ```
 
 > [!NOTE]
@@ -227,6 +227,7 @@ cd gradio-llamacpp-chatbot
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
+
 
 
 
