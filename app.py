@@ -43,7 +43,7 @@ with gr.Blocks(css=css) as interface:
                 type='messages',
                 show_copy_button=True, 
                 height=480,
-                )
+            )
             user_message = gr.Textbox(label='User')
 
             with gr.Row():
@@ -64,7 +64,7 @@ with gr.Blocks(css=css) as interface:
                     info='Number of previous messages taken into account in history',
                     label='history_len',
                     show_label=False,
-                    )
+               )
 
                 with gr.Group():
                     gr.Markdown('Generation parameters')
@@ -72,7 +72,7 @@ with gr.Blocks(css=css) as interface:
                         value=False,
                         label='do_sample',
                         info='Activate random sampling',
-                        )
+                    )
                     generate_args = get_generate_args(do_sample.value)
                     do_sample.change(
                         fn=get_generate_args,
@@ -101,7 +101,7 @@ with gr.Blocks(css=css) as interface:
         fn=lambda: None,
         inputs=None,
         outputs=[chatbot],
-        )
+    )
 
 
 if __name__ == '__main__':

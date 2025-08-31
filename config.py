@@ -13,3 +13,5 @@ LLAMA_MODEL_KWARGS = dict(
     verbose=True,
     n_ctx=4096,
 )
+
+SHOW_THINKING = False
