@@ -11,7 +11,6 @@ from init_model import MODEL, SUPPORT_SYSTEM_ROLE
 
 
 CHAT_HISTORY = List[Optional[Dict[str, Optional[str]]]]
-MODEL_DICT = Dict[str, Llama]
 
 
 def user_message_to_chatbot(user_message: str, chatbot: CHAT_HISTORY) -> Tuple[str, CHAT_HISTORY]:
@@ -67,3 +66,4 @@ def bot_response_to_chatbot(
             if not is_think:
                 chatbot[-1]['content'] += token
             yield chatbot
+
