@@ -26,6 +26,7 @@ def patched_config(monkeypatch):
 def chatbot_with_message():
     import os
     print(f"LOCAL_DIR: {os.getenv('LOCAL_DIR')}")
+    print(os.kistdir('LOCAL_DIR'))
     
     from utils import user_message_to_chatbot
 
@@ -43,6 +44,7 @@ def chatbot_with_message():
 def test_llm_pipepline(chatbot_with_message, monkeypatch):
     import os
     print(f"LOCAL_DIR: {os.getenv('LOCAL_DIR')}")
+    print(os.listdir('LOCAL_DIR'))
     
     from utils import user_message_to_chatbot, bot_response_to_chatbot
     from config import GENERATION_KWARGS
@@ -64,3 +66,4 @@ def test_llm_pipepline(chatbot_with_message, monkeypatch):
     assert len(assistant_message) > 0, 'LLM did not respond'
 
     print(f'Chatbot response: {assistant_message}')
+
