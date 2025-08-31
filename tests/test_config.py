@@ -15,4 +15,4 @@ LLAMA_MODEL_KWARGS = dict(
     verbose=False,
 )
 
-TEST_SHOW_THINKING = True
+SHOW_THINKING = True
