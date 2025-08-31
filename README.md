@@ -126,6 +126,11 @@ cd gradio-llamacpp-chatbot
     set CMAKE_ARGS=-DGGML_CUDA=on
 	pip install -r requirements.txt
     ```
+  - Windows PowerShell
+    ```powershell
+    $env:CMAKE_ARGS='-DGGML_CUDA=on'
+    pip install -r requirements-cuda.txt
+    ```
 
 > [!NOTE]
 > Для установки `llama-cpp-python` на Windows с поддержкой CUDA необходимо установить [Visual Studio 2022 Community](https://visualstudio.microsoft.com/ru/downloads/) и [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit-archive), как например показано в [этой](https://github.com/abetlen/llama-cpp-python/discussions/871#discussion-5812096) или [этой](https://github.com/Granddyser/windows-llama-cpp-python-cuda-guide?tab=readme-ov-file#12-visual-studio-2019-installation-and-configuration) инструкциях
@@ -222,4 +227,5 @@ cd gradio-llamacpp-chatbot
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
+
 
