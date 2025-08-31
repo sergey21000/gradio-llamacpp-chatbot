@@ -3,7 +3,7 @@ import sys
 
 import gradio as gr
 
-from config import GENERATE_KWARGS
+from config import GENERATION_KWARGS, SHOW_THINKING
 from utils import (
     user_message_to_chatbot,
     bot_response_to_chatbot,
@@ -16,14 +16,15 @@ def get_system_prompt_component(interactive: bool) -> gr.Textbox:
     return gr.Textbox(value=value, label='System prompt', interactive=interactive)
 
 
-def get_generate_args(do_sample: bool) -> list[gr.Component]:
-    generate_args = [
-        gr.Slider(minimum=0.1, maximum=3, value=GENERATE_KWARGS['temperature'], step=0.1, label='temperature', visible=do_sample),
-        gr.Slider(minimum=0, maximum=1, value=GENERATE_KWARGS['top_p'], step=0.01, label='top_p', visible=do_sample),
-        gr.Slider(minimum=1, maximum=50, value=GENERATE_KWARGS['top_k'], step=1, label='top_k', visible=do_sample),
-        gr.Slider(minimum=1, maximum=5, value=GENERATE_KWARGS['repeat_penalty'], step=0.1, label='repeat_penalty', visible=do_sample),
+def get_generation_args(do_sample: bool) -> list[gr.Component]:
+    KW = GENERATION_KWARGS
+    generation_args = [
+        gr.Slider(minimum=0.1, maximum=3, value=KW['temperature'], step=0.1, label='temperature', visible=do_sample),
+        gr.Slider(minimum=0, maximum=1, value=KW['top_p'], step=0.01, label='top_p', visible=do_sample),
+        gr.Slider(minimum=1, maximum=50, value=KW['top_k'], step=1, label='top_k', visible=do_sample),
+        gr.Slider(minimum=1, maximum=5, value=KW['repeat_penalty'], step=0.1, label='repeat_penalty', visible=do_sample),
     ]
-    return generate_args
+    return generation_args
 
 
 css = '''
@@ -41,16 +42,15 @@ with gr.Blocks(css=css) as interface:
         with gr.Column(scale=3):
             chatbot = gr.Chatbot(
                 type='messages',
-                show_copy_button=True, 
+                show_copy_button=True,
+                sanitize_html=False if SHOW_THINKING else True,
                 height=480,
             )
             user_message = gr.Textbox(label='User')
-
             with gr.Row():
                 user_message_btn = gr.Button('Send')
                 stop_btn = gr.Button('Stop')
                 clear_btn = gr.Button('Clear')
-
             system_prompt = get_system_prompt_component(interactive=SUPPORT_SYSTEM_ROLE)
 
         with gr.Column(scale=1, min_width=80):
@@ -65,7 +65,6 @@ with gr.Blocks(css=css) as interface:
                     label='history_len',
                     show_label=False,
                )
-
                 with gr.Group():
                     gr.Markdown('Generation parameters')
                     do_sample = gr.Checkbox(
@@ -73,11 +72,11 @@ with gr.Blocks(css=css) as interface:
                         label='do_sample',
                         info='Activate random sampling',
                     )
-                    generate_args = get_generate_args(do_sample.value)
+                    generation_args = get_generation_args(do_sample.value)
                     do_sample.change(
-                        fn=get_generate_args,
+                        fn=get_generation_args,
                         inputs=do_sample,
-                        outputs=generate_args,
+                        outputs=generation_args,
                         show_progress=False,
                     )
 
@@ -88,7 +87,7 @@ with gr.Blocks(css=css) as interface:
         outputs=[user_message, chatbot],
     ).then(
         fn=bot_response_to_chatbot,
-        inputs=[chatbot, system_prompt, history_len, do_sample, *generate_args],
+        inputs=[chatbot, system_prompt, history_len, do_sample, *generation_args],
         outputs=[chatbot],
     )
     stop_btn.click(

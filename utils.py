@@ -3,8 +3,8 @@ from typing import Iterator
 import gradio as gr
 from llama_cpp import Llama
 
-from config import GENERATE_KWARGS, SHOW_THINKING
-from init_model import MODEL, SUPPORT_SYSTEM_ROLE 
+from config import GENERATION_KWARGS, SHOW_THINKING
+from init_model import MODEL, SUPPORT_SYSTEM_ROLE
 
 
 CHAT_HISTORY = list[gr.ChatMessage | dict[str, str | gr.Component]]
@@ -37,7 +37,7 @@ def bot_response_to_chatbot(
 
     messages.append(chatbot[-1])
 
-    gen_kwargs = dict(zip(GENERATE_KWARGS.keys(), generate_args))
+    gen_kwargs = dict(zip(GENERATION_KWARGS.keys(), generate_args))
     gen_kwargs['top_k'] = int(gen_kwargs['top_k'])
     if not do_sample:
         gen_kwargs['top_p'] = 0.0
@@ -57,6 +57,8 @@ def bot_response_to_chatbot(
         if token is None:
             continue
         if SHOW_THINKING:
+            if token == '<think>':
+                gr.Info('Thinking...')
             chatbot[-1]['content'] += token
             yield chatbot
             continue
@@ -67,7 +69,7 @@ def bot_response_to_chatbot(
         elif token == '</think>':
             is_think = False
             chatbot[-1]['content'] = ''
+            continue
         if not is_think:
             chatbot[-1]['content'] += token
         yield chatbot
-
