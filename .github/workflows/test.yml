@@ -31,7 +31,7 @@ jobs:
         run: pip install huggingface-hub[hf_xet]
 
       - name: Download model
-        run: hf download ${{ env.REPO_ID }} ${{ env.FILENAME }}
+        run: hf download ${{ env.REPO_ID }} ${{ env.FILENAME }} --local-dir ${{ env.LOCAL_DIR }}
 
       - name: Cache model
         uses: actions/cache@v4
