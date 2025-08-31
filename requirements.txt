@@ -1,2 +1,2 @@
-llama-cpp-python==0.3.14
-gradio==5.39.0
+llama-cpp-python==0.3.16
+gradio==5.42.0
