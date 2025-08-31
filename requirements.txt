@@ -1,3 +1,4 @@
 llama-cpp-python==0.3.16
 gradio==5.42.0
 pytest==8.4.1
+huggingface_hub[hf_xet]
