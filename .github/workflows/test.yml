@@ -9,7 +9,7 @@ env:
   PYTHONUTF8: 1
   REPO_ID: bartowski/Qwen_Qwen3-0.6B-GGUF
   FILENAME: Qwen_Qwen3-0.6B-Q4_K_M.gguf
-  LOCAL_DIR: ~/.cache/huggingface/hub/model
+  LOCAL_DIR: model
 
 jobs:
   download-model:
@@ -29,6 +29,9 @@ jobs:
           
       - name: Install huggingface-hub
         run: pip install huggingface-hub[hf_xet]
+
+      - name: Create model directory
+        run: mkdir -p ${{ env.LOCAL_DIR }}
 
       - name: Download model
         run: hf download ${{ env.REPO_ID }} ${{ env.FILENAME }} --local-dir ${{ env.LOCAL_DIR }}
