@@ -1,6 +1,5 @@
 import os
 import sys
-from typing import List
 
 import gradio as gr
 
@@ -17,7 +16,7 @@ def get_system_prompt_component(interactive: bool) -> gr.Textbox:
     return gr.Textbox(value=value, label='System prompt', interactive=interactive)
 
 
-def get_generate_args(do_sample: bool) -> List[gr.Component]:
+def get_generate_args(do_sample: bool) -> list[gr.Component]:
     generate_args = [
         gr.Slider(minimum=0.1, maximum=3, value=GENERATE_KWARGS['temperature'], step=0.1, label='temperature', visible=do_sample),
         gr.Slider(minimum=0, maximum=1, value=GENERATE_KWARGS['top_p'], step=0.01, label='top_p', visible=do_sample),
@@ -106,5 +105,4 @@ with gr.Blocks(css=css) as interface:
 
 
 if __name__ == '__main__':
-
     interface.launch()
