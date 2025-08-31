@@ -30,17 +30,25 @@ jobs:
       - name: Install huggingface-hub
         run: pip install huggingface-hub[hf_xet]
 
-      - name: Create model directory
+      - name: Create model directory (need for Windows)
         run: mkdir -p ${{ env.LOCAL_DIR }}
-
-      - name: Download model
-        run: hf download ${{ env.REPO_ID }} ${{ env.FILENAME }} --local-dir ${{ env.LOCAL_DIR }}
 
       - name: Cache model
         uses: actions/cache@v4
         with:
           path: ${{ env.LOCAL_DIR }}
           key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
+          
+      - name: Download model
+        run: >
+          hf download ${{ env.REPO_ID }} ${{ env.FILENAME }} 
+          --local-dir ${{ env.LOCAL_DIR }} --cache-dir ${{ env.LOCAL_DIR }}
+
+      # - name: Cache model
+        # uses: actions/cache@v4
+        # with:
+          # path: ${{ env.LOCAL_DIR }}
+          # key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
 
   test-linux:
     needs: download-model
