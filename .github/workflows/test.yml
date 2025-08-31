@@ -37,7 +37,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.LOCAL_DIR }}
-          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.MODEL_FILE }}
+          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
 
   test-linux:
     needs: download-model
@@ -60,7 +60,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.LOCAL_DIR }}
-          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.MODEL_FILE }}
+          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
       
       - name: Check model exists
         run: ls -lh ${{ env.LOCAL_DIR }}
@@ -95,7 +95,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.LOCAL_DIR }}
-          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.MODEL_FILE }}
+          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
 
       - name: Check model exists
         run: dir ${{ env.LOCAL_DIR }}
@@ -108,4 +108,3 @@ jobs:
       - name: Test with pytest
         run: |
           python -m pytest -vs
-
