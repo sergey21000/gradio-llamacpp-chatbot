@@ -60,7 +60,7 @@ jobs:
           key: model-${{ env.REPO_ID }}-${{ env.FILENAME }}
       
       - name: Check model exists
-        run: ls -lh model
+        run: ls -lh ${{ env.LOCAL_DIR }}
 
       - name: Install dependencies
         run: |
@@ -95,7 +95,7 @@ jobs:
           key: model-${{ env.REPO_ID }}-${{ env.FILENAME }}
 
       - name: Check model exists
-        run: dir model
+        run: dir ${{ env.LOCAL_DIR }}
 
       - name: Install dependencies
         run: |
