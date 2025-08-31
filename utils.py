@@ -1,10 +1,7 @@
-from pathlib import Path
 from typing import Iterator
-from tqdm import tqdm
 
-import requests
-from llama_cpp import Llama
 import gradio as gr
+from llama_cpp import Llama
 
 from config import GENERATE_KWARGS, SHOW_THINKING
 from init_model import MODEL, SUPPORT_SYSTEM_ROLE 
@@ -73,3 +70,4 @@ def bot_response_to_chatbot(
         if not is_think:
             chatbot[-1]['content'] += token
         yield chatbot
+
