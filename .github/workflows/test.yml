@@ -13,12 +13,15 @@ env:
 
 jobs:
   download-model:
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python with caching
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
