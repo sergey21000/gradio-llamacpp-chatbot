@@ -1,0 +1,95 @@
+name: Test Chatbot
+
+on: workflow_dispatch
+
+permissions:
+  contents: read
+
+env:
+  REPO_ID: bartowski/Qwen_Qwen3-0.6B-GGUF
+  FILENAME: Qwen_Qwen3-0.6B-Q4_K_M.gguf
+
+jobs:
+  download-model:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python with caching
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          
+      - name: Install huggingface-hub
+        run: pip install huggingface-hub
+
+      - name: Download model
+        run: hf download ${{ env.REPO_ID }} ${{ env.FILENAME }} --local-dir models
+
+      - name: Cache model
+        uses: actions/cache@v4
+        with:
+          path: model
+          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
+
+  test-linux:
+    needs: download-model
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt'
+
+      - name: Restore model cache
+        uses: actions/cache@v4
+        with:
+          path: models
+          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Test with pytest
+        run: |
+          python -m pytest -vs
+
+  test-windows:
+    needs: download-model
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt'
+
+      - name: Restore model cache
+        uses: actions/cache@v4
+        with:
+          path: models
+          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+      - name: Test with pytest
+        run: |
+          python -m pytest -vs
