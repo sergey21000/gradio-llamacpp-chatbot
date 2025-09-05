@@ -10,6 +10,9 @@ from utils import (
 )
 from init_model import SUPPORT_SYSTEM_ROLE
 
+from dotenv import load_dotenv
+load_dotenv(dotenv_path='gradio_env')
+
 
 def get_system_prompt_component(interactive: bool) -> gr.Textbox:
     value = '' if interactive else 'System prompt is not supported by this model'
@@ -104,4 +107,5 @@ with gr.Blocks(css=css) as interface:
 
 
 if __name__ == '__main__':
+
     interface.launch()
