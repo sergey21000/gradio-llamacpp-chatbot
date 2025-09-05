@@ -3,10 +3,8 @@ name: Tests and Deploy
 on:
   workflow_dispatch:
   push:
-    # тесты при пуше в main
     branches: [main]
   pull_request:
-    # тесты при PR в dev и main
     branches: [dev, main]
 
 permissions:
@@ -119,8 +117,6 @@ jobs:
   deploy:
     needs: [test-linux, test-windows]
     runs-on: ubuntu-latest
-    # деплой только из main (в строковых выражениях только одинарные кавачки)
-    # выражение выдаст true только при push, при PR выдаст false
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Deploy to production
@@ -129,11 +125,10 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # в sudo systemctl restart указать название серсиса которое создавали на удаленном сервере
-          # при установке библиотек используем pip из виртуального окружения которое тоже создавали
           script: |
             cd ${{ secrets.DEPLOY_PATH }}
             git pull origin main
             /home/ubuntu/gradio-llamacpp-chatbot/env/bin/python -m pip install -r requirements.txt
             sudo systemctl restart chatbot
+
             echo "🚀 Production deployment completed!"
