@@ -1,25 +1,13 @@
-FROM python:3.12 AS builder
+FROM ghcr.io/sergey21000/gradio-llamacpp-chatbot:main-cpu
 
-COPY requirements.txt .
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /wheels -r requirements.txt
+RUN useradd -m -u 1000 user \
+    && chown -R user:user /app
 
-
-FROM python:3.12-slim
-
-RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 \
-	&& apt-get clean && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/*
-
-COPY --from=builder /wheels /wheels
-RUN pip install --no-cache-dir /wheels/* && rm -rf /wheels
-
-RUN useradd -m -u 1000 user
 USER user
 ENV HOME=/home/user \
     PATH=/home/user/.local/bin:$PATH
 
-WORKDIR $HOME/app
+WORKDIR /app
+COPY --chown=user config.py ./
 
-COPY --chown=user app.py utils.py init_model.py config.py .
-ENV GRADIO_SERVER_NAME=0.0.0.0
-EXPOSE 7860
 CMD ["python3", "app.py"]
