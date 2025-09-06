@@ -1,0 +1,8 @@
+name: T
+on: [workflow_dispatch]
+jobs:
+  build-cpu:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Build and push CPU image
+        run: echo "ghcr.io/${{ github.repository }}:${{ github.ref_name }}-cuda"
