@@ -1,6 +1,11 @@
-name: Tests
+name: Tests and Deploy
 
-on: workflow_dispatch
+on:
+  workflow_dispatch:
+  # push:
+    # branches: [main]
+  # pull_request:
+    # branches: [dev, main]
 
 permissions:
   contents: read
@@ -13,10 +18,7 @@ env:
 
 jobs:
   download-model:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-24.04, windows-2022]
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,21 +31,19 @@ jobs:
           
       - name: Install huggingface-hub
         run: pip install huggingface-hub[hf_xet]
-
-      - name: Create model directory (need for Windows)
-        run: mkdir -p ${{ env.LOCAL_DIR }}
-
-      - name: Cache model
-        uses: actions/cache@v4
-        with:
-          path: ${{ env.LOCAL_DIR }}
-          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
           
       - name: Download model
         run: >
           hf download ${{ env.REPO_ID }} ${{ env.FILENAME }} 
           --local-dir ${{ env.LOCAL_DIR }} --cache-dir ${{ env.LOCAL_DIR }}
 
+      - name: Upload model artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: model
+          path: ${{ env.LOCAL_DIR }}
+          overwrite: true
+      
   test-linux:
     needs: download-model
     runs-on: ubuntu-24.04
@@ -61,12 +61,12 @@ jobs:
           cache: 'pip'
           cache-dependency-path: 'requirements.txt'
 
-      - name: Restore model cache
-        uses: actions/cache@v4
+      - name: Download model artifact
+        uses: actions/download-artifact@v4
         with:
+          name: model
           path: ${{ env.LOCAL_DIR }}
-          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
-      
+          
       - name: Check model exists
         run: ls -lh ${{ env.LOCAL_DIR }}
 
@@ -96,11 +96,11 @@ jobs:
           cache: 'pip'
           cache-dependency-path: 'requirements.txt'
 
-      - name: Restore model cache
-        uses: actions/cache@v4
+      - name: Download model artifact
+        uses: actions/download-artifact@v4
         with:
+          name: model
           path: ${{ env.LOCAL_DIR }}
-          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
 
       - name: Check model exists
         run: dir ${{ env.LOCAL_DIR }}
@@ -113,3 +113,21 @@ jobs:
       - name: Test with pytest
         run: |
           python -m pytest -vs
+
+  deploy:
+    needs: [test-linux, test-windows]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to production
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            git pull origin main
+            /home/ubuntu/gradio-llamacpp-chatbot/env/bin/python -m pip install -r requirements.txt
+            sudo systemctl restart chatbot
+            echo "🚀 Production deployment completed!"
