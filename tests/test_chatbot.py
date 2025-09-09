@@ -4,19 +4,8 @@ import pytest
 import gradio as gr
 from llama_cpp import Llama
 
-from tests import test_config
-
 
 CHAT_HISTORY = list[gr.ChatMessage | dict[str, str | gr.Component]]
-
-
-@pytest.fixture(autouse=True)
-def patched_config(monkeypatch):
-    monkeypatch.setattr(
-        'config.LLAMA_MODEL_KWARGS',
-        test_config.LLAMA_MODEL_KWARGS,
-    )
-    monkeypatch.setattr('config.SHOW_THINKING', test_config.SHOW_THINKING)
 
 
 @pytest.fixture
@@ -53,5 +42,6 @@ def test_llm_pipepline(chatbot_with_message, monkeypatch):
         pass
     assistant_message: str = result_chatbot[-1].get('content', '')
     assert len(assistant_message) > 0, 'LLM did not respond'
+
 
     print(f'Chatbot response: {assistant_message}')
