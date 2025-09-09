@@ -1,13 +1,10 @@
-import sys
-from pathlib import Path
 from typing import Iterator
-sys.path.append(str(Path(__file__).parent.parent))
 
 import pytest
 import gradio as gr
 from llama_cpp import Llama
 
-import test_config
+from tests import test_config
 
 
 CHAT_HISTORY = list[gr.ChatMessage | dict[str, str | gr.Component]]
