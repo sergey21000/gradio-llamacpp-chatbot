@@ -1,7 +1,6 @@
 name: Deploy to HuggingFace Spaces
 
-on:
-  workflow_dispatch:
+on: workflow_dispatch
 
 jobs:
   deploy:
@@ -29,3 +28,4 @@ jobs:
           git commit -m "Auto-deploy from GitHub Actions: ${{ github.sha }}" || echo "No changes to commit"
 
           git push https://${{ github.repository_owner }}:$HF_TOKEN@huggingface.co/spaces/${{ github.repository }} main
+
