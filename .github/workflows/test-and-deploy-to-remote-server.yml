@@ -130,5 +130,4 @@ jobs:
             git pull origin main
             /home/ubuntu/gradio-llamacpp-chatbot/env/bin/python -m pip install -r requirements.txt
             sudo systemctl restart chatbot
-
             echo "🚀 Production deployment completed!"
