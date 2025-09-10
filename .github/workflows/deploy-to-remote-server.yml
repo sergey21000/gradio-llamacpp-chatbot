@@ -1,0 +1,20 @@
+name: Deploy
+
+on: workflow_dispatch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to production
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            git pull origin main
+            /home/ubuntu/gradio-llamacpp-chatbot/env/bin/python -m pip install -r requirements.txt
+            sudo systemctl restart chatbot
+            echo "🚀 Production deployment completed!"
