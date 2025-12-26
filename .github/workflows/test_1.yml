@@ -70,7 +70,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r https://github.com/sergey21000/llama-cpp-python-wheels/releases/download/v0.3.16-cpu/llama_cpp_python-0.3.16-cp312-cp312-linux_x86_64.whl
+          python -m pip install https://github.com/sergey21000/llama-cpp-python-wheels/releases/download/v0.3.16-cpu/llama_cpp_python-0.3.16-cp312-cp312-linux_x86_64.whl
           python -m pip install -r requirements.txt
 
       - name: Test with pytest
