@@ -43,7 +43,6 @@ if hasattr(sys, 'getandroidapilevel') or 'ANDROID_ROOT' in os.environ:
 with gr.Blocks(css=css) as interface:
     with gr.Row():
         with gr.Column(scale=3):
-            gr.Markdown('Новая фича')
             chatbot = gr.Chatbot(
                 type='messages',
                 show_copy_button=True,
@@ -110,4 +109,5 @@ with gr.Blocks(css=css) as interface:
 if __name__ == '__main__':
 
     interface.launch()
+
 
