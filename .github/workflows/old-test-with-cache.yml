@@ -2,12 +2,12 @@ name: Tests and Deploy (Old, with cache)
 
 on:
   workflow_dispatch:
-  push:
+  # push:
     # тесты при пуше в main
-    branches: [main]
-  pull_request:
+    # branches: [main]
+  # pull_request:
     # тесты при PR в dev и main
-    branches: [dev, main]
+    # branches: [dev, main]
 
 permissions:
   contents: read
