@@ -11,7 +11,7 @@ from utils import (
 from init_model import SUPPORT_SYSTEM_ROLE
 
 from dotenv import load_dotenv
-load_dotenv(dotenv_path='gradio_env')
+load_dotenv(dotenv_path='gradio.env')
 
 
 def get_system_prompt_component(interactive: bool) -> gr.Textbox:
