@@ -1,0 +1,142 @@
+name: Tests and Deploy (Old, with cache)
+
+on:
+  workflow_dispatch:
+  push:
+    # тесты при пуше в main
+    branches: [main]
+  pull_request:
+    # тесты при PR в dev и main
+    branches: [dev, main]
+
+permissions:
+  contents: read
+
+env:
+  PYTHONUTF8: 1
+  REPO_ID: bartowski/Qwen_Qwen3-0.6B-GGUF
+  FILENAME: Qwen_Qwen3-0.6B-Q4_K_M.gguf
+  LOCAL_DIR: model
+
+jobs:
+  download-model:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          
+      - name: Install huggingface-hub
+        run: pip install huggingface-hub[hf_xet]
+
+      - name: Create model directory (need for Windows)
+        run: mkdir -p ${{ env.LOCAL_DIR }}
+
+      - name: Cache model
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.LOCAL_DIR }}
+          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
+          
+      - name: Download model
+        run: >
+          hf download ${{ env.REPO_ID }} ${{ env.FILENAME }} 
+          --local-dir ${{ env.LOCAL_DIR }} --cache-dir ${{ env.LOCAL_DIR }}
+
+  test-linux:
+    needs: download-model
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt'
+
+      - name: Restore model cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.LOCAL_DIR }}
+          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
+      
+      - name: Check model exists
+        run: ls -lh ${{ env.LOCAL_DIR }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Test with pytest
+        run: |
+          python -m pytest -vs
+
+  test-windows:
+    needs: download-model
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          cache-dependency-path: 'requirements.txt'
+
+      - name: Restore model cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.LOCAL_DIR }}
+          key: ${{ runner.os }}-model-${{ env.REPO_ID }}-${{ env.FILENAME }}
+
+      - name: Check model exists
+        run: dir ${{ env.LOCAL_DIR }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+
+      - name: Test with pytest
+        run: |
+          python -m pytest -vs
+
+  deploy:
+    needs: [test-linux, test-windows]
+    runs-on: ubuntu-latest
+    # деплой только из main (в строковых выражениях только одинарные кавачки)
+    # выражение выдаст true только при push, при PR выдаст false
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to production
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd ${{ secrets.DEPLOY_PATH }}
+            git pull origin main
+            pip install -r requirements.txt
+            sudo systemctl restart telegram-bot
+            echo "🚀 Production deployment completed!"

@@ -28,4 +28,3 @@ jobs:
           git add .
           git commit -m "Auto-deploy from GitHub Actions: ${{ github.sha }}" || echo "No changes to commit"
           git push https://$REPO_OWNER:$HF_TOKEN@huggingface.co/spaces/$REPO_OWNER/$REPO_NAME main
-

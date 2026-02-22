@@ -3,4 +3,3 @@
 Затем перейти в `Files` -> `Contribute` -> `Upload files` и загрузить файлы `Dockerfile` и `config.py`
 
 ![HF Spaces deploy](./hf-spaces-deploy.png)
-
