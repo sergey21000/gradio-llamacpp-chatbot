@@ -12,7 +12,7 @@ env:
   LLAMA_ARG_HF_REPO: Qwen/Qwen3-VL-2B-Instruct-GGUF
   LLAMA_ARG_HF_FILE: Qwen3VL-2B-Instruct-Q4_K_M.gguf
   LLAMA_ARG_MMPROJ: mmproj-Qwen3VL-2B-Instruct-Q8_0.gguf
-  LLM_MODEL_DIR: llm_models
+  LLM_MODEL_DIR: llama_cache
 
 jobs:
   download-models:
@@ -45,8 +45,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: model
-          path: |
-            ${{ env.LLM_MODEL_DIR }}
+          path: ${{ env.LLM_MODEL_DIR }}
           overwrite: true
 
   test-linux:
@@ -64,7 +63,7 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: model
-          path: .
+          path: ${{ env.LLM_MODEL_DIR }}
       
       - name: Check model exists
         run: |
@@ -104,7 +103,7 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: model
-          path: .
+          path: ${{ env.LLM_MODEL_DIR }}
 
       - name: Check model exists
         run: |
