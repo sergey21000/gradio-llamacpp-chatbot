@@ -7,12 +7,12 @@ permissions:
 
 env:
   PYTHONUTF8: 1
-  LLAMA_ARG_HF_REPO: bartowski/Qwen_Qwen3-0.6B-GGUF
-  LLAMA_ARG_HF_FILE: Qwen_Qwen3-0.6B-Q4_K_M.gguf
-  EMBED_MODEL_REPO: sergeyzh/rubert-tiny-turbo
-
+  # LLAMA_ARG_HF_REPO: bartowski/Qwen_Qwen3-0.6B-GGUF:q4_k_m
+  # LLAMA_ARG_HF_FILE: Qwen_Qwen3-0.6B-Q4_K_M.gguf
+  LLAMA_ARG_HF_REPO: Qwen/Qwen3-VL-2B-Instruct-GGUF
+  LLAMA_ARG_HF_FILE: Qwen3VL-2B-Instruct-Q4_K_M.gguf
+  LLAMA_ARG_MMPROJ: mmproj-Qwen3VL-2B-Instruct-Q8_0.gguf
   LLM_MODEL_DIR: llm_models
-  EMBED_MODEL_DIR: embed_models
 
 jobs:
   download-models:
@@ -38,10 +38,8 @@ jobs:
         run: |
           uv run hf download ${{ env.LLAMA_ARG_HF_REPO }} ${{ env.LLAMA_ARG_HF_FILE }} \
           --local-dir ${{ env.LLM_MODEL_DIR }}
-          # convert dir name to "models--Alibaba-NLP--gte-multilingual-base"
-          EMBED_FOLDER=$(echo "${{ env.EMBED_MODEL_REPO }}" | sed 's/\//--/g')
-          uv run hf download ${{ env.EMBED_MODEL_REPO }} \
-          --local-dir ${{ env.EMBED_MODEL_DIR }}/models--$EMBED_FOLDER
+          uv run hf download ${{ env.LLAMA_ARG_HF_REPO }} ${{ env.LLAMA_ARG_MMPROJ }} \
+          --local-dir ${{ env.LLM_MODEL_DIR }}
 
       - name: Upload model artifact
         uses: actions/upload-artifact@v6
@@ -49,7 +47,6 @@ jobs:
           name: model
           path: |
             ${{ env.LLM_MODEL_DIR }}
-            ${{ env.EMBED_MODEL_DIR }}
           overwrite: true
 
   test-linux:
@@ -73,8 +70,6 @@ jobs:
         run: |
           echo "LLM models:"
           ls -lh ${{ env.LLM_MODEL_DIR }}
-          echo "Embed models:"
-          ls -lh ${{ env.EMBED_MODEL_DIR }}
       
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -88,7 +83,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -r requirements/requirements-cpu.txt --index-strategy unsafe-best-match
+          uv pip install -r requirements.txt
 
       - name: Test with pytest
         run: |
@@ -115,8 +110,6 @@ jobs:
         run: |
           echo "LLM models:"
           dir ${{ env.LLM_MODEL_DIR }}
-          echo "Embed models:"
-          dir ${{ env.EMBED_MODEL_DIR }}
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -130,17 +123,8 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -r requirements/requirements-cpu.txt --index-strategy unsafe-best-match
-
-      - name: Install dependencies
-        run: |
-          uv pip install --upgrade pip
-          uv pip install -r requirements/requirements-cpu.txt --index-strategy unsafe-best-match
-          # fix for unstructured dependence
-          uv pip uninstall -y python-magic || true
-          uv pip install python-magic-bin
+          uv pip install -r requirements.txt
 
       - name: Test with pytest
         run: |
           uv run pytest -vs
-

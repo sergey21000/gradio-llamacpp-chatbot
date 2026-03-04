@@ -1,46 +1,33 @@
 from typing import Iterator
 
-import pytest
-import gradio as gr
-from llama_cpp import Llama
+
+CHAT_HISTORY = list[dict[str, str | list]]
 
 
-CHAT_HISTORY = list[gr.ChatMessage | dict[str, str | gr.Component]]
+def test_chatbot_with_user_message(chatbot_with_user_message):
+    print(f'Chatbot with user message: {chatbot_with_user_message}')
+    assert len(chatbot_with_user_message) == 1, 'The message was not added to the chat'
+    message = chatbot_with_user_message[0]
+    assert isinstance(message, dict)
+    assert message['role'] == 'user'
+    assert isinstance(message['content'], list)
+    assert len(message['content']) == 1
+    assert message['content'][0].get('path', '').endswith('белка.png')
 
 
-@pytest.fixture
-def chatbot_with_message():
-    from utils import user_message_to_chatbot
+def test_llm_pipepline(chatbot_with_user_message, config):
+    from modules.ui_fn import UiFn
 
-    chatbot = []
-    user_message = 'Как дела?'
-    result, updated_chatbot = user_message_to_chatbot(user_message, chatbot)
-    assert len(updated_chatbot) == 1, 'The message was not added to the chat'
-    assert result == ''
-    assert updated_chatbot[-1]['role'] == 'user'
-    assert updated_chatbot[-1]['content'] == user_message
-    
-    return updated_chatbot
-
-
-def test_llm_pipepline(chatbot_with_message):
-    from utils import user_message_to_chatbot, bot_response_to_chatbot
-    from config import GENERATION_KWARGS
-
-    system_prompt = ''
-    history_len = 0
-    do_sample = True
-    generate_args = list(GENERATION_KWARGS.values())
-    stream_chatbot: Iterator[CHAT_HISTORY] = bot_response_to_chatbot(
-        chatbot_with_message,
-        system_prompt,
-        history_len,
-        do_sample,
-        *generate_args,
+    stream_chatbot: Iterator[CHAT_HISTORY] = UiFn.llm_response_to_chatbot(
+        chatbot=chatbot_with_user_message,
+        config=config,
     )
     for result_chatbot in stream_chatbot:
         pass
-    assistant_message: str = result_chatbot[-1].get('content', '')
-    assert len(assistant_message) > 0, 'LLM did not respond'
-
+    assistant_message = result_chatbot[-1]
     print(f'Chatbot response: {assistant_message}')
+    assert isinstance(assistant_message, dict)
+    assert assistant_message['role'] == 'user'
+    assert isinstance(assistant_message['content'], list)
+    assert len(assistant_message['content']), 'LLM did not respond'
+    
