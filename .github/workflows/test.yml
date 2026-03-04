@@ -42,7 +42,7 @@ jobs:
           --local-dir ${{ env.LLM_MODEL_DIR }}
 
       - name: Upload model artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: model
           path: ${{ env.LLM_MODEL_DIR }}
