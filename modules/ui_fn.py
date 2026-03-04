@@ -1,3 +1,4 @@
+import copy
 import pprint
 from typing import Iterator
 
@@ -88,7 +89,16 @@ class UiFn:
             convert_to_openai_format=True,
             use_responses_api=Config.USE_RESPONSES_API,
         )
-        logger.debug(f'"messages" before "llm_client.stream":\n{pprint.pformat(messages)}')
+        
+        log_messags = copy.deepcopy(messages)
+        for msg in log_messags:
+            if isinstance(msg.get('content'), list):
+                if msg['content'][0].get('input_image'):
+                    msg['content'][0]['image_url'] = msg['content'][0]['image_url'][:20]
+                elif msg['content'][0].get('image_url'):
+                    msg['content'][0]['image_url']['url'] = msg['content'][0]['image_url']['url'][:20]
+
+        logger.debug(f'"messages" before "llm_client.stream":\n{pprint.pformat(log_messags)}')
         logger.debug(f'"request_kwargs" before "llm_client.stream":\n{pprint.pformat(request_kwargs)}')
         stream_kwargs = dict(
             user_message_or_messages=messages,

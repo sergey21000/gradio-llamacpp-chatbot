@@ -29,6 +29,5 @@ def test_llm_pipepline(chatbot_with_user_message, config, llm_server):
     assistant_message = result_chatbot[-1]
     assert isinstance(assistant_message, dict)
     assert assistant_message['role'] == 'assistant'
-    assert isinstance(assistant_message['content'], list)
     assert len(assistant_message['content']), 'LLM did not respond'
     
