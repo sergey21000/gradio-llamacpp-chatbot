@@ -41,7 +41,7 @@ jobs:
         run: |
           uv run hf download ${{ env.HF_REPO }} ${{ env.HF_FILE }} \
           --local-dir ${{ env.LLAMA_CACHE }}
-          uv run hf download ${{ env.HF_REPO }} ${{ env.HF_FILE }} \
+          uv run hf download ${{ env.HF_REPO }} ${{ env.HF_MMPROJ }} \
           --local-dir ${{ env.LLAMA_CACHE }}
 
       - name: Upload model artifact
