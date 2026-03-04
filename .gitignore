@@ -1,6 +1,7 @@
 # Custom paths
 model/
 other/
+llama_cache/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

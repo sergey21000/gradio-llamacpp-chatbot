@@ -1,9 +1,9 @@
 
 
 ---
-# Gradio llama-cpp-python Chatbot
+# Gradio llama.cpp Chatbot
 
-**Чат-бот на `llama-cpp-python` с веб-интерфейсом на `Gradio`**
+**Чат-бот на `llama.cpp` с веб-интерфейсом на `Gradio`**
 
 ---
 ## 📋 Содержание
@@ -49,13 +49,14 @@
 ## 🚀 Функционал
 
 - Генерация ответа с использованием моделей в формате GGUF
+- Поддержка мультимодальности (изображения)
 - Настройка параметров генерации (`temperature`, `top_k`, `top_p`, `repetition_penalty`)
-- Возможность указать системный промт (если модель его не поддерживает это будет отображено)
+- Возможность указать системный промт
 - Выбор количества учитываемых сообщений в истории при подаче промта в модель
-- Возможность выводить или не выводить размышления модели если она его поддерживает (флаг `SHOW_THINKING` в `config.py`)
+- Возможность включать/отключать и выводить/не выводить размышления модели если она его поддерживает
 - Возможность выбора моделей в формате GGUF перед запуском
 
-После запуска приложения происходит загрузка LLM модели по умолчанию (`google_gemma-3-1b-it-Q8_0.gguf`, 1 GB) в папку `./models`  
+
 Изменить LLM модель перед запуском приложения можно в файле `config.py`, для необходимо заменить название репозитория и название файла модели в формате GGUF 
 
 Где искать LLM модели в формате GGUF
@@ -68,14 +69,14 @@
 ## 🏗 Стек Технологий
 
 - [python](https://www.python.org/) >= 3.10
-- [llama-cpp-python](https://github.com/abetlen/llama-cpp-python) для инференса моделей в формате GGUF
+- [llama-cpp-py](https://github.com/sergey21000/llama-cpp-py) запуск [llama.cpp](https://github.com/ggml-org/llama.cpp) сервера для инференса моделей в формате GGUF
 - [gradio](https://github.com/gradio-app/gradio) для написания веб-интерфейса
 - [Модель gemma-3-1b](https://huggingface.co/bartowski/google_gemma-3-1b-it-GGUF) `google_gemma-3-1b-it-Q8_0.gguf` в формате GGUF в качестве LLM модели по умолчанию
 
 
 Работоспособность приложения проверялась на следующих ОС и версиях Python
-- Ubuntu 22.04, python 3.11, CUDA 12.5 (Google Colab)
-- Windows 10, python 3.12, CUDA 12.8
+- Ubuntu 22.04, python 3.12, CUDA 12.5 (Google Colab)
+- Windows 10, python 3.12, CUDA 13.1
 - Android 11 (MIUI 12), Termux, python 3.12
 - Android 11 (MIUI 12), Ubuntu 22.04 (Andronix), python 3.10
 

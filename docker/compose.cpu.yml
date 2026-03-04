@@ -1,0 +1,43 @@
+services:
+  app:
+    image: ghcr.io/sergey21000/gradio-llamacpp-chatbot:main
+    container_name: app
+    restart: unless-stopped
+    ports:
+      - ${GRADIO_SERVER_PORT:-7860}:7860
+    volumes:
+      - ../config.py:/app/config.py
+    environment:
+      - GRADIO_SERVER_PORT=7860
+      - GRADIO_SERVER_NAME=0.0.0.0
+      - RUNNING_IN_DOCKER=True
+      - OPENAI_BASE_URL=http://llamacpp:8080
+    env_file:
+      - path: ../.env
+        required: true
+    depends_on:
+      llamacpp:
+        condition: service_healthy
+        restart: true
+
+  llamacpp:
+    image: ghcr.io/ggml-org/llama.cpp:server
+    container_name: llamacpp
+    restart: unless-stopped
+    ports:
+      - ${LLAMA_ARG_PORT:-8080}:8080
+    volumes:
+      - ${LLAMA_CACHE:-../llama_cache}:/root/.cache/llama.cpp
+    environment:
+      - LLAMA_ARG_PORT=8080
+      - LLAMA_ARG_HOST=0.0.0.0
+      - LLAMA_CACHE=/root/.cache/llama.cpp
+    env_file:
+      - path: ../.env
+        required: true
+    # healthcheck:
+      # test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      # interval: 10s
+      # timeout: 5s
+      # retries: 5
+      # start_period: 30s

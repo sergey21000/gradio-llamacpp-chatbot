@@ -1,0 +1,12 @@
+services:
+  app:
+    extends:
+      file: ../docker/compose.cpu.yml
+      service: app
+
+  llamacpp:
+    extends:
+      file: ../docker/compose.cpu.yml
+      service: llamacpp
+    image: ghcr.io/ggml-org/llama.cpp:server-cuda
+    gpus: all
