@@ -15,7 +15,7 @@ def test_chatbot_with_user_message(chatbot_with_user_message):
     assert message['content'][0].get('path', '').endswith('белка.png')
 
 
-def test_llm_pipepline(chatbot_with_user_message, config):
+def test_llm_pipepline(chatbot_with_user_message, config, llm_server):
     from modules.ui_fn import UiFn
 
     stream_chatbot: Iterator[CHAT_HISTORY] = UiFn.llm_response_to_chatbot(
@@ -24,8 +24,9 @@ def test_llm_pipepline(chatbot_with_user_message, config):
     )
     for result_chatbot in stream_chatbot:
         pass
+    print(f'Chatbot response: {result_chatbot}')
+    assert result_chatbot
     assistant_message = result_chatbot[-1]
-    print(f'Chatbot response: {assistant_message}')
     assert isinstance(assistant_message, dict)
     assert assistant_message['role'] == 'user'
     assert isinstance(assistant_message['content'], list)

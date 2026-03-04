@@ -1,4 +1,5 @@
 import pytest
+from llama_cpp_py import LlamaSyncServer
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -15,6 +16,12 @@ def config():
     config.generation_kwargs['enable_thinking'] = True
     config.generation_kwargs['show_thinking'] = True
     return config
+
+
+@pytest.fixture(scope='session')
+def llm_server():
+    llama_server = LlamaSyncServer()
+    llama_server.start()
 
 
 @pytest.fixture(scope='session')
