@@ -11,7 +11,7 @@ def test_chatbot_with_user_message(chatbot_with_user_message):
     assert isinstance(message, dict)
     assert message['role'] == 'user'
     assert isinstance(message['content'], list)
-    assert len(message['content']) == 1
+    assert len(message['content']) == 2
     assert message['content'][0].get('path', '').endswith('белка.png')
 
 
