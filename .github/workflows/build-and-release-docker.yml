@@ -32,4 +32,4 @@ jobs:
           pull: true
           platforms: linux/amd64
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.ref_name }}-cpu
+            ghcr.io/${{ github.repository }}:${{ github.ref_name }}

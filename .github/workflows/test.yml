@@ -9,10 +9,13 @@ env:
   PYTHONUTF8: 1
   # LLAMA_ARG_HF_REPO: bartowski/Qwen_Qwen3-0.6B-GGUF:q4_k_m
   # LLAMA_ARG_HF_FILE: Qwen_Qwen3-0.6B-Q4_K_M.gguf
-  LLAMA_ARG_HF_REPO: Qwen/Qwen3-VL-2B-Instruct-GGUF
-  LLAMA_ARG_HF_FILE: Qwen3VL-2B-Instruct-Q4_K_M.gguf
-  LLAMA_ARG_MMPROJ: mmproj-Qwen3VL-2B-Instruct-Q8_0.gguf
-  LLM_MODEL_DIR: llama_cache
+  HF_REPO: Qwen/Qwen3-VL-2B-Instruct-GGUF
+  HF_FILE: Qwen3VL-2B-Instruct-Q4_K_M.gguf
+  HF_MMPROJ: mmproj-Qwen3VL-2B-Instruct-Q8_0.gguf
+  
+  LLAMA_ARG_MODEL: llama_cache/Qwen3VL-2B-Instruct-Q4_K_M.gguf
+  LLAMA_ARG_MMPROJ: llama_cache/mmproj-Qwen3VL-2B-Instruct-Q8_0.gguf
+  LLAMA_CACHE: llama_cache
 
 jobs:
   download-models:
@@ -36,16 +39,16 @@ jobs:
           
       - name: Download models
         run: |
-          uv run hf download ${{ env.LLAMA_ARG_HF_REPO }} ${{ env.LLAMA_ARG_HF_FILE }} \
-          --local-dir ${{ env.LLM_MODEL_DIR }}
-          uv run hf download ${{ env.LLAMA_ARG_HF_REPO }} ${{ env.LLAMA_ARG_MMPROJ }} \
-          --local-dir ${{ env.LLM_MODEL_DIR }}
+          uv run hf download ${{ env.HF_REPO }} ${{ env.HF_FILE }} \
+          --local-dir ${{ env.LLAMA_CACHE }}
+          uv run hf download ${{ env.HF_REPO }} ${{ env.HF_FILE }} \
+          --local-dir ${{ env.LLAMA_CACHE }}
 
       - name: Upload model artifact
         uses: actions/upload-artifact@v7
         with:
           name: model
-          path: ${{ env.LLM_MODEL_DIR }}
+          path: ${{ env.LLAMA_CACHE }}
           overwrite: true
 
   test-linux:
@@ -63,12 +66,12 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: model
-          path: ${{ env.LLM_MODEL_DIR }}
+          path: ${{ env.LLAMA_CACHE }}
       
       - name: Check model exists
         run: |
           echo "LLM models:"
-          ls -lh ${{ env.LLM_MODEL_DIR }}
+          ls -lh ${{ env.LLAMA_CACHE }}
       
       - name: Install uv
         uses: astral-sh/setup-uv@v7
@@ -103,12 +106,12 @@ jobs:
         uses: actions/download-artifact@v7
         with:
           name: model
-          path: ${{ env.LLM_MODEL_DIR }}
+          path: ${{ env.LLAMA_CACHE }}
 
       - name: Check model exists
         run: |
           echo "LLM models:"
-          dir ${{ env.LLM_MODEL_DIR }}
+          dir ${{ env.LLAMA_CACHE }}
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
