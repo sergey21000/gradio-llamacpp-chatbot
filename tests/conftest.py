@@ -37,4 +37,7 @@ def chatbot_with_user_message():
         user_message=user_message,
         chatbot=chatbot,
     )
+    # format image message for gradio format
+    image_msg = {'file': {'path': updated_chatbot[0]['content'][0]['path']}}
+    updated_chatbot[0]['content'][0] = image_msg
     return updated_chatbot

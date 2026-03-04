@@ -12,7 +12,7 @@ def test_chatbot_with_user_message(chatbot_with_user_message):
     assert message['role'] == 'user'
     assert isinstance(message['content'], list)
     assert len(message['content']) == 2
-    assert message['content'][0].get('path', '').endswith('белка.png')
+    assert message['content'][0].get('file', {}).get('path', '').endswith('белка.png')
 
 
 def test_llm_pipepline(chatbot_with_user_message, config, llm_server):
@@ -28,7 +28,7 @@ def test_llm_pipepline(chatbot_with_user_message, config, llm_server):
     assert result_chatbot
     assistant_message = result_chatbot[-1]
     assert isinstance(assistant_message, dict)
-    assert assistant_message['role'] == 'user'
+    assert assistant_message['role'] == 'assistant'
     assert isinstance(assistant_message['content'], list)
     assert len(assistant_message['content']), 'LLM did not respond'
     
