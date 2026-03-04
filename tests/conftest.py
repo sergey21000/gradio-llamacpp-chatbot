@@ -31,7 +31,7 @@ def chatbot_with_user_message():
     chatbot = []
     user_message = {
         'text': 'Что на картинке?',
-        'files': ['tests/белка.png'],
+        'files': ['tests/test_files/белка.png'],
     }
     user_msg, updated_chatbot = UiFn.user_message_to_chatbot(
         user_message=user_message,
