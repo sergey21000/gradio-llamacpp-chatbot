@@ -81,6 +81,8 @@ git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
 cd gradio-llamacpp-chatbot
 ```
 
+Выбор моделей и другие настройки производятся в файле `.settings.env`
+
 **2) Установка зависимостей**  
 ```sh
 pip install -r requirements.txt
@@ -110,6 +112,8 @@ pytest -vs
 git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
 cd gradio-llamacpp-chatbot
 ```
+
+Выбор моделей и другие настройки производятся в файле `.settings.env`
 
 **2) Запуск Compose**
 
@@ -151,4 +155,3 @@ docker compose up
 ## Лицензия
 
 Этот проект лицензирован на условиях лицензии [MIT](./LICENSE).
-
