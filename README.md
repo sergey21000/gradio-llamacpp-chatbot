@@ -18,7 +18,7 @@
 
 ## 📽 Демонстрация
 
-<div align="left">
+<div align="center">
 <a href="https://huggingface.co/spaces/sergey21000/gradio-llamacpp-chatbot"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Spaces-yellow" alt="Hugging Face Spaces"></a>
 </div>
 
