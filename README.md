@@ -59,10 +59,8 @@
 ## 🏗 Стек Технологий
 
 - [python](https://www.python.org/) >= 3.10
-- [llama-cpp-py](https://github.com/sergey21000/llama-cpp-py) запуск [llama.cpp](https://github.com/ggml-org/llama.cpp) сервера для инференса моделей в формате GGUF
+- [llama-cpp-py](https://github.com/sergey21000/llama-cpp-py) - запуск [llama.cpp](https://github.com/ggml-org/llama.cpp) сервера для инференса моделей в формате GGUF
 - [gradio](https://github.com/gradio-app/gradio) для написания веб-интерфейса
-- [Модель gemma-3-1b](https://huggingface.co/bartowski/google_gemma-3-1b-it-GGUF) `google_gemma-3-1b-it-Q8_0.gguf` в формате GGUF в качестве LLM модели по умолчанию
-
 
 Работоспособность приложения проверялась на следующих ОС и версиях Python
 - Ubuntu 22.04, python 3.12, CUDA 12.5 (Google Colab)
