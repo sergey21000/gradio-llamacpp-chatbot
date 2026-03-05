@@ -28,4 +28,4 @@ ENV LLAMACPP_DIR=/opt/llama.cpp/build/bin
 
 WORKDIR /app
 
-CMD ["python3", "app.py"]
+CMD ["uv", "run", "app.py"]

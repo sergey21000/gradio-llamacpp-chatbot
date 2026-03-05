@@ -31,7 +31,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: docker/hf.Dockerfile
+          file: hf-spaces-deploy/build.Dockerfile
           push: true
           pull: true
           platforms: linux/amd64

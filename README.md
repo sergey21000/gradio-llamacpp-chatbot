@@ -1,11 +1,10 @@
 
 
----
 # Gradio llama.cpp Chatbot
 
 **Чат-бот на `llama.cpp` с веб-интерфейсом на `Gradio`**
 
----
+
 ## 📋 Содержание
 
 - 📽 [Демонстрация](#-Демонстрация)
@@ -19,7 +18,6 @@
 - 📱 [Установка и запуск на Android](#-Установка-и-Запуск-на-Android)
 
 
----
 ## 📽 Демонстрация
 
 <div align="center">
@@ -35,7 +33,6 @@
  - Установка SSL сертификатов для работы приложения по протоколу HTTPS на своем сайте
 
 
----
 ## 🖼 Скриншоты
 
 <details>
@@ -45,7 +42,6 @@
 </details>
 
 
----
 ## 🚀 Функционал
 
 - Генерация ответа с использованием моделей в формате GGUF
@@ -56,16 +52,12 @@
 - Возможность включать/отключать и выводить/не выводить размышления модели если она его поддерживает
 - Возможность выбора моделей в формате GGUF перед запуском
 
-
-Изменить LLM модель перед запуском приложения можно в файле `config.py`, для необходимо заменить название репозитория и название файла модели в формате GGUF 
-
 Где искать LLM модели в формате GGUF
 - [bartowski](https://huggingface.co/bartowski) 
 - [mradermacher](https://huggingface.co/mradermacher) 
 - [Поиск на HuggingFace](https://huggingface.co/models?pipeline_tag=text-generation&library=gguf&sort=trending)
 
 
----
 ## 🏗 Стек Технологий
 
 - [python](https://www.python.org/) >= 3.10
@@ -81,76 +73,25 @@
 - Android 11 (MIUI 12), Ubuntu 22.04 (Andronix), python 3.10
 
 
----
 ## 🐍 Установка и запуск через Python
 
 **1) Клонирование репозитория**  
-
 ```sh
 git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
 cd gradio-llamacpp-chatbot
 ```
 
-**2) Создание и активация виртуального окружения (опционально)**
-
-- *Linux*
-  ```sh
-  python3 -m venv env
-  source env/bin/activate
-  ```
-
-- *Windows CMD*
-  ```sh
-  python -m venv env
-  env\Scripts\activate
-  ```
-
-- *Windows PowerShell*
-  ```powershell
-  python -m venv env
-  env\Scripts\activate.ps1
-  ```
-
-**3) Установка зависимостей**  
-
-- *С поддержкой CPU*
-  ```sh
-  pip install -r requirements.txt
-  ```
-
-- *С поддержкой CUDA*
-  - Linux
-    ```sh
-    CMAKE_ARGS="-DGGML_CUDA=on" pip install -r requirements.txt
-    ```
-  - Windows CMD
-    ```sh
-    set CMAKE_ARGS=-DGGML_CUDA=on
-	pip install -r requirements.txt
-    ```
-  - Windows PowerShell
-    ```powershell
-    $env:CMAKE_ARGS='-DGGML_CUDA=on'
-    pip install -r requirements.txt
-    ```
-
-> [!NOTE]
-> Для установки `llama-cpp-python` на Windows с поддержкой CUDA необходимо установить [Visual Studio 2022 Community](https://visualstudio.microsoft.com/ru/downloads/) и [CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit-archive), как например показано в [этой](https://github.com/abetlen/llama-cpp-python/discussions/871#discussion-5812096) или [этой](https://github.com/Granddyser/windows-llama-cpp-python-cuda-guide?tab=readme-ov-file#12-visual-studio-2019-installation-and-configuration) инструкциях
-
-Для более быстрой установки `llama-cpp-python` можно воспользоваться готовыми колесами, например [отсюда](https://github.com/sergey21000/llama-cpp-python-wheels?tab=readme-ov-file#installation-examples) или [отсюда](https://github.com/abetlen/llama-cpp-python/releases)  
-Например установка на *Linux x86_64 / Python 3.12 с поддержкой CUDA 12.9*
+**2) Установка зависимостей**  
 ```sh
-pip install https://github.com/sergey21000/llama-cpp-python-wheels/releases/download/v0.3.14/llama_cpp_python-0.3.14-cp312-cp312-linux_x86_64.cu129.whl
 pip install -r requirements.txt
 ```
 
-**4) Запуск сервера Gradio**  
-
+**3) Запуск**  
 ```sh
-python3 app.py
+python app.py
 ```
+
 После запуска сервера перейти в браузере по адресу http://127.0.0.1:7860/  
-Приложение будет доступно через некоторое время (после первоначальной загрузки модели в директорию `./models`)
 
 Запуск тестов
 ```
@@ -158,33 +99,11 @@ pytest -vs
 ```
 
 
----
-## 🐳 Установка и запуск через Docker
+## 🐳 Установка и запуск через Docker Compose
 
 > [!NOTE]  
-> Для запуска приложения с поддержкой GPU CUDA необходима установка [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installation).
+Для запуска приложения с поддержкой GPU CUDA необходима установка [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html#installation).
 
-
-### 🏃 Запуск контейнера из образа Docker
-
-- *С поддержкой CPU*
-  ```sh
-  docker run -it -p 7860:7860 \
-	-v ./model:/app/model \
-	ghcr.io/sergey21000/gradio-llamacpp-chatbot:main-cpu
-  ```
-
-- *С поддержкой CUDA*
-  ```sh
-  docker run -it --gpus all -p 7860:7860 \
-	-v ./model:/app/model \
-	ghcr.io/sergey21000/gradio-llamacpp-chatbot:main-cuda
-  ```
-
-Чтобы выбрать другую модель или настроить настройки - пробросить файл конфига, добавив `-v ./config.py:/app/config.py`
-
-
-### 🏗 Сборка своего образа и запуск контейнера
 
 **1) Клонирование репозитория**  
 ```sh
@@ -192,38 +111,36 @@ git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
 cd gradio-llamacpp-chatbot
 ```
 
-**2) Сборка образа и запуск контейнера**
+**2) Запуск Compose**
 
-- *С поддержкой CPU*  
+*Запуск с поддержкой CPU*
+```sh
+docker compose -f docker/compose.cpu.yml up
+```
 
-  Сборка образа
-  ```sh
-  docker build -t gradio-llamacpp-chatbot:cpu-v1.0 -f Dockerfile-cpu .
-  ```
-  Запуск контейнера
-  ```sh
-  docker run -it -p 7860:7860 -v ./model:/app/model gradio-llamacpp-chatbot:cpu
-  ```
+*Запуск с поддержкой CUDA*
+```sh
+docker compose -f docker/compose.cuda.yml up
+```
 
-- *С поддержкой CUDA*  
+Веб-интерфейс сервера доступен по адресу  
+http://127.0.0.1:7860/  
 
-  Сборка образа на основе образа Nvidia
-  ```sh
-  docker build -t gradio-llamacpp-chatbot:cuda -f Dockerfile-cuda .
-  ```
-  Запуск контейнера
-  ```sh
-  docker run -it --gpus all -p 7860:7860 \
-	-v ./model:/app/model \
-	gradio-llamacpp-chatbot:cuda
-  ```
-  
-После запуска сервера перейти в браузере по адресу http://127.0.0.1:7860/  
-Приложение будет доступно после первоначальной загрузки модели в директорию `./model`
 
 ---
-Приложение создавалось для тестирования LLM моделей как любительский проект  
-Оно написано для демонстрационных и образовательных целей и не предназначалось / не тестировалось для промышленного использования
+<ins><b>Дополнительно</b></ins>
+
+Можно заранее указать файл `compose` по умолчанию и запускать короткой командой
+```sh
+# установка переменной окружения (вариант для Linux)
+export COMPOSE_FILE=docker/compose.cpu.yml
+
+# установка переменной окружения (вариант для Windows PowerShell)
+$env:COMPOSE_FILE="docker/compose.cpu.yml"
+
+# запуск короткой командой
+docker compose up
+```
 
 
 ## 📱 Установка и запуск на Android

@@ -13,7 +13,7 @@ services:
       - RUNNING_IN_DOCKER=True
       - OPENAI_BASE_URL=http://llamacpp:8080
     env_file:
-      - path: ../.env
+      - path: ../.settings.env
         required: true
     depends_on:
       llamacpp:
@@ -33,7 +33,7 @@ services:
       - LLAMA_ARG_HOST=0.0.0.0
       - LLAMA_CACHE=/root/.cache/llama.cpp
     env_file:
-      - path: ../.env
+      - path: ../.settings.env
         required: true
     # healthcheck:
       # test: ["CMD", "curl", "-f", "http://localhost:8080/health"]

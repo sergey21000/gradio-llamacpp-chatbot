@@ -18,5 +18,5 @@ services:
       - LLAMA_ARG_HOST=0.0.0.0
       - LLAMA_CACHE=/app/llm_models
     env_file:
-      - path: ../.env
+      - path: ../.settings.env
         required: true
