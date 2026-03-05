@@ -95,8 +95,7 @@ class UiComponents:
             maximum=4096,
             value=KW['max_output_tokens'],
             step=6,
-            label='top_k',
-            visible=KW['do_sample'],
+            label='max_output_tokens',
             render=False,
         )
         self.enable_thinking = gr.Checkbox(
