@@ -22,6 +22,6 @@ if __name__ == '__main__':
             ))
         demo.launch(**UiGradioConfig.get_demo_launch_kwargs())
     finally:
-        if not RUNNING_IN_DOCKER:
+        if not RUNNING_IN_DOCKER and llama_server:
             llama_server.stop()
         demo.close()

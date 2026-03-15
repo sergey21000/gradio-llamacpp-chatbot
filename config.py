@@ -8,8 +8,8 @@ class Config:
     SUPPORT_SYSTEM_ROLE: bool = True
     LLAMACPP_RELEASE_TAG: str = os.getenv('LLAMACPP_RELEASE_TAG', 'latest')
     LLAMACPP_PREFER_CUDA_BUILD: bool = (
-        os.getenv('LLAMACPP_PREFER_CUDA_BUILD', 'True')
-        in ('True', '1')
+        os.getenv('LLAMACPP_PREFER_CUDA_BUILD', 'true').lower()
+        in ('true', '1')
     )
     USE_RESPONSES_API = (
         os.getenv('CHATBOT_USE_RESPONSES_API', '0').lower() 
