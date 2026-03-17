@@ -22,11 +22,5 @@ if openai_api_key or openai_base_url:
     )
 else:
     priority_patterns = ['cuda'] if Config.LLAMACPP_PREFER_CUDA_BUILD else ['cpu']
-    llama_server = LlamaSyncServer(
-        # verbose=True,
-        # release_manager=LlamaReleaseManager(
-        #     tag=Config.LLAMACPP_RELEASE_TAG,
-        #     priority_patterns=priority_patterns,
-        # ),
-    )
+    llama_server = LlamaSyncServer()
     llm_client = LlamaSyncClient(openai_base_url=llama_server.openai_base_url)
