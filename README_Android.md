@@ -5,7 +5,7 @@
 
 ## 📋 Содержание
 
-- [Установка Termux на Android](#-установка-termux-на-android)
+- [Установка Termux на Android](#установка-termux-на-android)
 - [Сборка llama.cpp в Termux](#-сборка-llamacpp-в-termux)
   - [Подготовка](#подготовка)
   - [Сборка с поддержкой CPU](#сборка-с-поддержкой-cpu)
