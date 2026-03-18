@@ -5,17 +5,25 @@
 
 ## 📋 Содержание
 
-- [Установка Termux на Android](#Установка-Termux-на-Android)
-- [Запуск приложения в Termux](#Запуск-приложения-в-Termux)
-
-- [Вариант установки и запуска через Termux и Ubuntu через Andronix](#Вариант-установки-и-запуска-через-Termux-и-Ubuntu-через-Andronix)
-- - [Установка Ubuntu](#Установка-Ubuntu)
-- - [Запуск приложения в Ubuntu](#Запуск-приложения-в-Ubuntu)
-- [(New) Вариант установки и запуска через Termux и Ubuntu через PRoot Distro](#Вариант-установки-и-запуска-через-Termux-и-Ubuntu-через-PRoot-Distro)
-- [(New) Подключение из ПК к телефону по SSH через Tabby + WinSCP](#new-Подключение-из-ПК-к-телефону-по-SSH-через-Tabby-WinSCP)
-- [Подключение из ПК к телефону по SSH через терминал](#Подключение-из-ПК-к-телефону-по-SSH-через-терминал)
-- [Подключение из ПК к телефону по SSH через MobaXterm](#Подключение-из-ПК-к-телефону-по-SSH-через-MobaXterm)
-- [Ссылки](#Ссылки)
+- [Установка Termux на Android](#-установка-termux-на-android)
+- [Сборка llama.cpp в Termux](#-сборка-llamacpp-в-termux)
+  - [Подготовка](#подготовка)
+  - [Сборка с поддержкой CPU](#сборка-с-поддержкой-cpu)
+  - [Сборка с поддержкой GPU (Vulkan)](#сборка-с-поддержкой-gpu-vulkan)
+  - [Проверка запуска llama.cpp](#проверка-запуска-llamacpp)
+- [Запуск Python приложения в Termux](#-запуск-python-приложения-в-termux)
+  - [Настройка переменных окружения](#настройка-переменных-окружения)
+  - [Установка зависимостей через uv](#установка-зависимостей-через-uv)
+  - [Запуск приложения](#запуск-приложения)
+- [Вариант установки через Ubuntu (Andronix)](#-вариант-установки-через-ubuntu-andronix)
+  - [Установка Ubuntu в Termux](#установка-ubuntu-в-termux)
+  - [Сборка llama.cpp в Ubuntu](#сборка-llamacpp-в-ubuntu)
+  - [Запуск приложения в Ubuntu](#запуск-приложения-в-ubuntu)
+- [Подключение к телефону по SSH](#-подключение-к-телефону-по-ssh)
+  - [Через Tabby + WinSCP](#через-tabby--winscp)
+  - [Через терминал](#через-терминал)
+  - [Через MobaXterm](#через-mobaxterm)
+- [Ссылки](#-ссылки)
 
 
 ## Установка Termux на Android
@@ -76,10 +84,11 @@ https://wiki.termux.dev/wiki/Python
 </details>
 
 
-## Сборка llama.cpp на Android
+## Сборка llama.cpp в Termux
 
 Документация по сборке llama.cpp
 https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md
+
 
 ### Подготовка
 
@@ -95,17 +104,18 @@ cd libs
 /data/data/com.termux/files/home/libs
 ```
 
-**2) Установка библиотек для сборки llama.cpp в `Termux` **
+**2) Установка библиотек для сборки llama.cpp в `Termux`**
 ```sh
 pkg update
-pkg install cmake clang libandroid-spawn
+pkg install cmake clang git libandroid-spawn
 ```
 
-**3) Клонирование репозитория llama.cpp **
+**3) Клонирование репозитория llama.cpp**
 ```
 git clone https://github.com/ggerganov/llama.cpp
 cd llama.cpp
 ```
+
 
 ### Сборка с поддержкой CPU
 
@@ -128,6 +138,7 @@ cat /proc/cpuinfo | grep processor | wc -l
 cmake -B build -DGGML_CPU_KLEIDIAI=ON
 cmake --build build --config Release --target llama-server -j 8
 ```
+
 
 ### Сборка с поддержкой GPU (Vulkan)
 
@@ -168,20 +179,20 @@ build/bin/llama-server --version
 ```
 
 Должна появиться строчка вроде:
-```
+```sh
 ggml_vulkan: Using Mali-G76
 ```
 
 Добавить путь до `llama-server` в системную директорию `Termux` чтобы вызывать `llama-server` из любого места и указать путь к библиотекам  
 Для этого открыть на редактирование файл `~/.bashrc`
-```
+```sh
 nano ~/.bashrc
 ```
 
 Дописать туда строки, указав соотвествующий путь до папки bin
 ```sh
-export LD_LIBRARY_PATH="~/libs/llama.cpp/build/bin:$LD_LIBRARY_PATH"
-export PATH="~/libs/llama.cpp/build/bin:$PATH"
+export LD_LIBRARY_PATH="$HOME/libs/llama.cpp/build/bin:$LD_LIBRARY_PATH"
+export PATH="$HOME/libs/llama.cpp/build/bin:$PATH"
 ```
 
 Применить изменения
@@ -226,25 +237,36 @@ cd gradio-llamacpp-chatbot
 
 **3) Установка Python библиотек**
 
-Создание и активация виртуального окружения (опционально)
-```sh
-python -m venv .venv --system-site-packages
-source .venv/bin/activate
-```
-Здесь важно указать `--system-site-packages` чтобы окружение видело например глобально установленный numpy
+- Активация виртуального окружения и установка библиотек через Pip
+  ```
+  python -m venv .venv --system-site-packages
+  source .venv/bin/activate
+  export ANDROID_API_LEVEL=30
+  pip install -r requirements.txt
+  ```
+  Флаг `--system-site-packages` нужен чтобы окружение видело например глобально установленные numpy, pandas
 
-Установка Python библиотек
-```sh
-pip install -r requirements.txt
+- Активация виртуального окружения и установка библиотек через UV
+  ```
+  uv venv
+  source .venv/bin/activate
+  export ANDROID_API_LEVEL=30
+  uv pip install -r requirements.txt
+  ANDROID_API_LEVEL=30 uv pip install -r requirements.txt --python-platform aarch64-linux-android
+  ```
+
+Установка ANDROID_API_LEVEL нужна для корректной установки библиотеки `orjson` (зависимость для `gradio`), иначе у меня выдало ошибку при установке
+
+ANDROID_API_LEVEL=30 соотвествует Android 11, если потрербуется указать свой ANDROID_API_LEVEL, его можно узнать командой
 ```
-Установка CFLAGS нужна для корректной установки pandas, как сказано в Wiki `Termux`
-https://wiki.termux.dev/wiki/Python
+getprop ro.build.version.sdk
+```
 
 **5) Запуск приложения**
 
-Перед запуском открыть файл настроек `.settings.env` и указать путь до скомпилированной на предыдущем этапе llama.cpp
+Перед запуском приложения открыть файл настроек `.settings.env` и указать путь до скомпилированной на предыдущем этапе llama.cpp
 ```env
-LLAMACPP_DIR=~/libs/llama.cpp/build/bin
+LLAMACPP_DIR=/data/data/com.termux/files/home/libs/llama.cpp/build/bin
 ```
 
 Запуск приложения
@@ -262,12 +284,12 @@ python app.py
 
 
 
-## Вариант установки и запуска через Termux и Ubuntu через Andronix
+## Вариант установки и запуска приложения через Ubuntu (Andronix)
 
 Данная инструкция может пригодиться если какие либо из библиотек на устанавливаются на обычный Termux  
 
 
-### Установка Ubuntu
+### Установка Ubuntu в Termux
 
 **1) Установить Termux по инструкции выше**
 
@@ -293,78 +315,114 @@ ubuntu22.sh && chmod +x ubuntu22.sh && bash ubuntu22.sh
 Если нужно потом вручную запускать `Ubuntu`, нужно просто ввести в Termux `./start-ubuntu22.sh`, этот скрипт появляется после установки `Ubuntu` (если ставили другую ОС то будет называться соотвественно)  
 Чтобы выйти из `Ubuntu` обратно в `Termux` - ввести `exit`  
 Сама папка с `Ubuntu` лежит там же где и скрипт, в папке  
-`/data/data/com.termux/files/home/ubuntu22-fs/`
+`/data/data/com.termux/files/home/ubuntu22-fs/`  
+Для удаления `Ubuntu` выбрать ее в интерфейсе `Andronix` долгим тапом и выбрать `Uninstall`, затем вставить скопированную команду в `Termux` и выполнить
 
-`Ubuntu` запущена и готова к работе, можно ставить необходимые пакеты, например `apt install nano`  
+`Ubuntu` запущена и готова к работе, можно ставить необходимые пакеты
+```sh
+apt update
+apt install git curl wget nano
+```
 
 <ins><b>Все дальнейшие команды вводить в `Ubuntu`</b></ins>
 
 
+### Сборка llama.cpp в Ubuntu
+
+**1) Установка библиотек для сборки**
+```
+apt update
+apt install -y cmake clang git build-essential libssl-dev
+```
+
+**2) Клонирование репозитория llama.cpp**
+```
+git clone https://github.com/ggerganov/llama.cpp
+cd llama.cpp
+```
+
+**3) Сборка llama.cpp**
+
+- Вариант 1 - обычная сборка
+  ```sh
+  cmake -B build
+  cmake --build build --config Release --target llama-server -j $(nproc)
+  ```
+
+- Вариант 2 - сборка с поддежкой оптимизации KleidiAI для процессоров ARM
+  ```sh
+  cmake -B build -DGGML_CPU_KLEIDIAI=ON
+  cmake --build build --config Release --target llama-server -j $(nproc)
+  ```
+
+**4) Проверка сборки**
+```sh
+build/bin/llama-server --version
+```
+
+**5) Добавление путей до llama.cpp в систему**
+
+Добавить путь до `llama-server` в системную директорию `Termux` чтобы вызывать `llama-server` из любого места и указать путь к библиотекам  
+Для этого открыть на редактирование файл `~/.bashrc`
+```sh
+nano ~/.bashrc
+```
+
+Дописать туда строки, указав соотвествующий путь до папки bin
+```sh
+export LD_LIBRARY_PATH="/root/llama.cpp/build/bin:$LD_LIBRARY_PATH"
+export PATH="/root/llama.cpp/build/bin:$PATH"
+```
+
+Применить изменения
+```sh
+source ~/.bashrc
+```
+
+
 ### Запуск приложения в Ubuntu
 
-**1) Установка Python и дополнительных библиотек на Ubuntu**  
-
-Команды для установки `Python` и необходимых библиотек на `Ubuntu`
-```sh
-apt update
-apt install python3 python3-pip python3-venv git nano wget
-pip install --upgrade pip setuptools
-```
-Для `Ubuntu 22.04` устанавливается версия Python 3.10.12  
-
-**2) Перенос папки проекта на Android и запуск приложения**
-
-> [!NOTE]  
-Создать виртуальное окружение можно только в директориях `Ubuntu` (в памяти телефона `/sdcard` нельзя)  
-Создавать виртуальное окружение необязательно
-
-<ins><b>Вариант 1</b></ins> клонировать репозиторий через Git в текущее расположение `/root` (либо создать пользователя в `Ubuntu` и работать с домашней директорией пользователя)  
+**1) Клонирование репозитория проекта**
 ```sh
 git clone https://github.com/sergey21000/gradio-llamacpp-chatbot.git
-python3 -m venv env
-source env/bin/activate
-pip install -U pip
-pip install -r requirements.txt
-python3 app.py
-```
-
-<ins><b>Вариант 2</b></ins> перекинуть папку с приложением на телефон (например через кабель)  
-Удобно когда нужно быстро поменять модель в папке `model` с помощью ПК и кабеля, но данный способ не работает с виртуальным окружением  
-
-В данном примере в основной папке телефона `\sdcard` создана папка `python` и в ней лежит папка приложения `gradio-llamacpp-chatbot`
-```sh
-cd /sdcard/python/gradio-llamacpp-chatbot/
-pip install -r requirements.txt
-python3 app.py
-```
-
-<ins><b>Вариант 3</b></ins> такой же как предыдущий но с виртуальным окружением  
-Подключаем телефон к ПК, перекидываем в папку `/sdcard` папку с приложением (`gradio-llamacpp-chatbot`) и перемещаем ее в корневую директорию `Ubuntu` через терминвал командой `mv`
-```sh
-mv -v /sdcard/gradio-llamacpp-chatbot ./gradio-llamacpp-chatbot
 cd gradio-llamacpp-chatbot
-python3 -m venv env
-source env/bin/activate
-pip install -U pip
-pip install -r requirements.txt
-python3 app.py
 ```
 
-<ins><b>Вариант 4</b></ins> подключиться к телефону по SSH через ПО, например MobaXterm и перекинуть папку с приложением через файловый менеджер  
-Удобно при работе через MobaXterm, поскольку по умолчанию он открывается в папке `/data/data/com.termux/files/home`, и виртуальное окружение с данным способом работает
+**2) Установка Python и библиотек на Ubuntu**  
 
-В данном примере папка с приложением `gradio-llamacpp-chatbot` перенесена через файловый менеджер MobaXterm в корневую директорию `Termux`
+Установка Python, активация виртуального окружения и установка библиотек
+
+- Вариант через Pip
+  ```
+  apt install -y python3-pip python3-venv
+  python3 -m venv .venv
+  source .venv/bin/activate
+  pip install -r requirements.txt
+  ```
+
+- Вариант через UV
+  ```
+  wget -qO- https://astral.sh/uv/install.sh | sh
+  source $HOME/.local/bin/env
+  uv python install 3.12
+  uv venv
+  source .venv/bin/activate
+  UV_LINK_MODE=copy UV_NO_CACHE=1 uv pip install -r requirements.txt
+  ```
+
+**3) Запуск приложения**
+
+Перед запуском приложения открыть файл настроек `.settings.env` и указать путь до скомпилированной на предыдущем этапе llama.cpp (открыть можно например командой `nano .settings.env`)
+```env
+LLAMACPP_DIR=/root/llama.cpp/build/bin
+```
+
+Запуск приложения
 ```sh
-cd /data/data/com.termux/files/home
-python3 -m venv env
-source env/bin/activate
-pip install -U pip
-pip install -r requirements.txt
 python3 app.py
 ```
 
-Перейти с любого браузера телефона по адресу `http://localhost:7860` 
-
+Перейти с любого браузера телефона по адресу `http://127.0.0.1:7860`  
 Для остановки приложения ввести Ctrl + C  
 Чтобы выйти из `Ubuntu` обратно в `Termux` - в терминале ввести `exit`  
 Чтобы заново открыть `Ubuntu` из `Termux` - в терминале ввести `./start-ubuntu22.sh`  
@@ -384,29 +442,6 @@ python3 app.py
 <summary>Страница загрузки моделей GGUF</summary>
 <img src="./screenshots/load_gguf_in_android.jpg" alt="GGUF Load" width=40%>
 </details>
-
-
-## (New) Вариант установки и запуска через Termux и Ubuntu через PRoot Distro
-
-
-
-
-
-
-Установка Linux в Android через PRoot Distro
-https://github.com/termux/proot-distro
-
-pkg install proot-distro
-
-proot-distro install ubuntu
-
-proot-distro login ubuntu
-
-
-
-
-
-
 
 
 ### (New) Подключение из ПК к телефону по SSH через Tabby + WinSCP
@@ -633,3 +668,12 @@ https://4pda.to/forum/index.php?showtopic=972503
 
 Статья `Устанавливаем рабочий стол Linux на Android` с альтернативами `Andronix`  
 https://habr.com/ru/articles/495720/
+
+Установка Linux в Android через PRoot Distro  
+https://github.com/termux/proot-distro  
+```
+pkg update
+pkg install proot-distro
+proot-distro install ubuntu
+proot-distro login ubuntu
+```
