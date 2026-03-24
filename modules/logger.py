@@ -8,7 +8,7 @@ class IsolationDefaultHandlerFilter:
     def __init__(self, logger_extras: list[str]):
         self.logger_extras = logger_extras
 
-    def __call__(self, record):
+    def __call__(self, record: dict) -> bool:
         for logger_extra in self.logger_extras:
             if logger_extra in record['extra']:
                 return False
